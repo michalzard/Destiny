@@ -1,0 +1,14 @@
+@import "Theme.scss";
+
+body,html{
+    width:100vw;
+    height: 100vh;
+    margin:0;
+    padding:0;
+    background-color: $blue_background;
+    overflow:hidden;
+    @font-face {
+        font-family: Roboto;
+        src: url(../assets/fonts/Roboto-Black.ttf);
+    };
+}

@@ -1,0 +1,25 @@
+// customizes default bootstrap popover look
+@import "../Theme.scss";
+.popover-body{
+    background-color: $blue_secondary;
+    
+    .anchor{
+        text-decoration: none;
+        color: $blue_primary_highlight;
+        margin-top: 50px;
+        font-weight: bold;
+    }
+}
+
+div[role="tooltip"]{
+    background-color: $blue_primary_highlight;
+}
+.popover-header{
+    background-color: $blue_secondary;
+    border:none;
+    color:$blue_primary_highlight;
+}
+
+.bs-popover-auto[x-placement^=left]>.arrow::after, .bs-popover-left>.arrow::after{
+    border-left-color:$blue_secondary
+}
