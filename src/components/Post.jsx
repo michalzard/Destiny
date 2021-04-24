@@ -4,10 +4,10 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import ShareIcon from '@material-ui/icons/Share';
 import BlockIcon from '@material-ui/icons/Block';
-import FlagIcon from '@material-ui/icons/Flag';
+//import FlagIcon from '@material-ui/icons/Flag';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-function Post({}){
+function Post(){
     //Idea: type props that will change how post is renderered(text,img/gif,link)
     return(
     /**content_post adds extra padding between singular posts */

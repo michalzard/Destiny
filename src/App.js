@@ -28,7 +28,7 @@ function App() {
       if(session)setUser(session.value);
     }
     loadSession();
-  }, [window.cookie])
+  }, [])
   return (
     <div className="App">
       <Router>

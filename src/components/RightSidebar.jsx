@@ -46,7 +46,7 @@ function ProfileCard(){
     return(
     <div className="profileCard">
     <div className="card_header">
-    <img src="broken" className="card_photo" alt=""></img>
+    <img src="" className="card_photo" alt=""></img>
     <div className="card_info">userName <div className="info_tag">@userTag</div></div>
     </div>
     <div className="card_followers"><span className="followers"><span>0</span> followers</span>
