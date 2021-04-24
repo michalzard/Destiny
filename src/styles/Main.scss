@@ -1,0 +1,120 @@
+@import "Theme.scss";
+
+.main {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+}
+.middle {
+  display: flex;
+  flex: 0.5;
+}
+
+
+
+//content(middle portion)
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid $blue_secondary;
+  padding: 5px;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .content_posts {
+    display: flex;
+    flex-direction: column;
+    padding: 5x;
+    overflow-y: scroll;
+    height: 100vh;
+    padding-bottom: 300px;
+
+  }
+.content_posts::-webkit-scrollbar {
+    width: 5px;
+}
+
+.content_posts::-webkit-scrollbar-thumb {
+    background: $blue_primary;
+}
+  .content_postHeader {
+    display: flex;
+    color: $blue_primary;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid $blue_secondary;
+
+  }
+
+  .content_post {
+    padding-top: 5px;
+  }
+
+  .createPostContainer {
+    padding: 10px;
+    background-color: $blue_secondary;
+
+    h5 {
+      padding-left: 20px;
+    }
+
+    .postInputs {
+      border-radius: 5px;
+      padding: 10px;
+
+      .titleInput {
+        padding-bottom: 10px;
+      }
+
+      .textInput {
+        padding-bottom: 10px;
+      }
+    }
+
+    .postControls {
+      display: flex;
+      justify-content: space-between;
+
+      .postIcons {
+        display: flex;
+        flex: 1;
+
+        .postIcon {
+          margin-left: 10px;
+          fill: $red_primary;
+          width: 30px;
+          height: 30px;
+        }
+
+        :hover {
+          cursor: pointer;
+          fill: white;
+        }
+
+        :nth-child(3):hover {
+          border: 2px solid white;
+
+        }
+      }
+
+      //0th element is hidden file type input so that's why 3rd child is selected
+      .postIcon:nth-child(2) {
+        border: 2px solid $red_primary;
+        border-radius: 5px;
+      }
+
+      .postButton {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        padding-right: 10px;
+      }
+    }
+
+  }
+}

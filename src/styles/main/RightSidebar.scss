@@ -1,0 +1,73 @@
+@import "../Theme.scss";
+
+.right {
+    display: flex;
+    justify-content: center;
+    flex: 0.25;
+    padding: 20px;
+  }
+
+  //user info
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  background-color: $blue_secondary;
+  width: 325px;
+  height: 265px;
+  border-radius: 10px;
+  padding: 20px;
+
+  .card_header {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+
+    .card_info {
+      padding-left: 25px;
+    }
+
+    .card_photo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .info_tag {
+      color: $blue_primary_highlight;
+    }
+  }
+
+  .card_followers {
+    display: flex;
+    justify-content: space-between;
+
+    .followers {
+      color: $blue_primary;
+
+      span {
+        color: white;
+      }
+    }
+  }
+
+  .card_description {
+    color: $blue_primary;
+    padding-top: 10px;
+    overflow: hidden
+  }
+}
+
+.profileMenu {
+  display: flex;
+  justify-content: flex-end;
+  color: $blue_primary;
+
+  svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  :hover {
+    color: $blue_primary_highlight;
+    cursor: pointer;
+  }
+}
