@@ -1,0 +1,89 @@
+@import "../Theme.scss";
+
+.login {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  font-family: Roboto;
+
+  .login_footer {
+    display: flex;
+    flex: 0.06;
+  }
+
+  .login_div {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login_panel {
+    background-color: $blue_secondary;
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    height: 300px;
+    border-radius: 15px;
+    padding: 30px;
+
+    h3 {
+      flex: .3;
+    }
+  }
+
+  .panel_info {
+    flex: 1;
+
+    a {
+      color: $red_primary;
+      text-decoration: none;
+    }
+  }
+
+  .panel_input {
+    .MuiTextField-root {
+      padding-bottom: 15px;
+    }
+  }
+}
+
+
+.login_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $blue_primary;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.footer_info {
+  display: flex;
+  padding-right: 25px;
+  width: 350px;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    color: $blue_primary;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: $blue_primary_highlight;
+  }
+}
+
+.footer_icons {
+  display: flex;
+  justify-content: space-around;
+  width: 100px;
+
+  :hover path {
+    fill: $blue_primary_highlight;
+    background-color: red;
+  }
+}
