@@ -4,19 +4,24 @@ import {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
 import PersonIcon from '@material-ui/icons/Person';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-function RightSideBar(){
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+function RightSideBar({userId}){
     return(
         <div className="rightSidebar">
-        <ProfileMenu/>
-        <ProfileCard/>
+        <ProfileMenu userId={userId} />
+        <ProfileCard userId={userId} />
         </div>
     )
 }
 
 export default RightSideBar;
 
-function ProfileMenu(){
-     
+function ProfileMenu({userId}){
+     const logout=()=>{
+         axios.post("http://localhost:3000/logout");
+         if(localStorage.getItem("user_data")) localStorage.removeItem("user_data");
+     }
     return(
     <div className="profileMenu">
     <OverlayTrigger trigger="click" placement="left" 
@@ -32,7 +37,7 @@ function ProfileMenu(){
     <DiscordIcon width={22} height={22} style={{fill:"#b2bdcd"}}/> <a className="anchor" href="https://discord.gg/HzXaRJcbyp">Discord</a>
     </p>
 
-    <a href="/login" className="anchor">
+    <a href="/" onClick={()=>{logout();}} className="anchor">
     <ExitToAppIcon/> Logout</a>
    </Popover.Content>
    </Popover>}>
@@ -42,15 +47,30 @@ function ProfileMenu(){
     )
 }
 
-function ProfileCard(){
+function ProfileCard({userId}){
+    const [displayName,setName]=useState("");
+    const [followerCount,setFollowerCount]=useState(0);
+    const [followingCount,setFollowingCount]=useState(0);
+    const fetchUserData=()=>{
+    if(userId)axios.get(`http://localhost:3000/member/${userId}`).then(data=>{
+    const member=data.data.member;    
+    setFollowerCount(member.followers.followedCount);
+    setFollowingCount(member.followers.followingCount);
+    setName(member.username)
+    });
+    }
+    useEffect(()=>{
+        fetchUserData();
+    });
+
     return(
     <div className="profileCard">
     <div className="card_header">
     <img src="" className="card_photo" alt=""></img>
-    <div className="card_info">userName <div className="info_tag">@userTag</div></div>
+    <div className="card_info">{displayName} <div className="info_tag">@{userId}</div></div>
     </div>
-    <div className="card_followers"><span className="followers"><span>0</span> followers</span>
-    <span className="followers"><span>0</span> following</span><span></span>
+    <div className="card_followers"><span className="followers"><span>{followerCount}</span> followers</span>
+    <span className="followers"><span>{followingCount}</span> following</span><span></span>
     </div>
     <div className="card_description">
     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
