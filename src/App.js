@@ -14,35 +14,37 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import {useState,useEffect} from 'react';
+import {useEffect, useState} from 'react';
+//import axios from 'axios';
 
 
 function App() {
-  const [user,setUser]=useState("");
+  const [userId,setUserId]=useState("");
+
   /**
    * runs once to load session
    */
+  const loadUserData=()=>{
+    const savedUserId=JSON.parse(localStorage.getItem("user_data"));
+    if(savedUserId)setUserId((savedUserId));
+  }
   useEffect(() => {
-    const loadSession =async()=>{
-      const session=await window.cookieStore.get("connect.sid");
-      if(session)setUser(session.value);
-    }
-    loadSession();
-  }, [])
+    loadUserData();
+  }, []);
   return (
     <div className="App">
       <Router>
       <Switch>
 
       <Route exact path="/">
-      {user ? <Main/> : <Welcome/>}
+      {userId ? <Main userId={userId}/> : <Welcome/>}
       </Route>
       <Route exact path="/register">
       <Register/>
       </Route>
 
       <Route exact path="/login">
-      <Login/>
+      <Login setUser={setUserId} />
       </Route>
 
       </Switch>
