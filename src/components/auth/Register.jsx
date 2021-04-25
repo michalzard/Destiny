@@ -21,6 +21,10 @@ function Register() {
         axios.post("http://localhost:3000/register",{username:username,password:password})
         setUserName(""); 
         setPassword("");
+        axios.get("http://localhost:3000/validateSession").then(data=>{
+            if(data.data)localStorage.setItem("user_data",JSON.stringify(data.data))
+        });
+        
     }
     
     return (       
@@ -42,7 +46,7 @@ function Register() {
             <Button variant="danger" onClick={()=>{submitRegisterData()}} href="/login"
             disabled={(username.length>5 && password.length>=8) ? false : true}
             >Register</Button> 
-            <a href="/login" style={{color:"purple"}}>Already have an account?</a>
+            <a href="/login" style={{color:"#BFFFBC"}}>Already have an account?</a>
             </div>
             </div>
 

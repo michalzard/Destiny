@@ -9,7 +9,7 @@ import { Redirect } from 'react-router-dom';
 
 
 
-function Login() {
+function Login({setUser}) {
     const [username,setUserName]=useState("");
     const [password,setPassword]=useState("");
     const [errorMessage,setErrorMessage]=useState("");
@@ -19,13 +19,23 @@ function Login() {
     const getPassword=(e)=>{
         setPassword(e.target.value);
     }
-
+  
     const submitLoginData=()=>{
         axios.post("http://localhost:3000/login",{username:username,password:password})
-        .then(res=>{setErrorMessage(res.data.message)});
+        .then(res=>{setErrorMessage(res.data.message);
+        //save user session
+        if(res.data.user){
+        localStorage.setItem("user_data",JSON.stringify(res.data.user));
+        
+        setUser(res.data.user)  
+        };    
+        });
         setUserName(""); 
         setPassword("");
+        
     }
+
+    
     return (    
 
         <div className="login">
@@ -40,12 +50,12 @@ function Login() {
             </div>
             <div style={{color:"red"}}>{errorMessage}</div>
             
-            {errorMessage==="Valid" ? <Redirect to="/"/> : null}
+            {errorMessage.startsWith("Valid") ? <Redirect to="/"/> : null}
 
             <Button variant="danger" onClick={()=>{submitLoginData()}}
             disabled={(username.length>0 && password.length>0) ? false : true}>Login</Button> 
 
-            <a href="/register" style={{color:"purple"}}>Register on Destiny</a>
+            <a href="/register" style={{color:"#BFFFBC"}}>Register on Destiny</a>
             </div>
             </div>
 
