@@ -6,28 +6,76 @@ import ShareIcon from '@material-ui/icons/Share';
 import BlockIcon from '@material-ui/icons/Block';
 //import FlagIcon from '@material-ui/icons/Flag';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-
 import TimeAgo from 'javascript-time-ago'
 // English.
 import en from 'javascript-time-ago/locale/en'
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 TimeAgo.addDefaultLocale(en);
-function Post({author,title,content,votes,timestamp}){
+
+function Post({_id,author,title,content,votes,timestamp}){
+    const [voteDiff,setVoteDiff]=useState(0);
+    const [alreadyLiked,setAlreadyLiked]=useState(false);
+    const [alreadyDisliked,setAlreadyDisliked]=useState(false);
+
     const timeAgo=new TimeAgo("en-US");  
     const timestampFormatted=new Date(timestamp).getTime();
     const diff=Date.now() - timestampFormatted;
+    const currentUserID=localStorage.getItem("user_data");
+    const loadVotes=()=>{
+    setVoteDiff(votes.like-votes.dislike);
+    }
+    const alreadyVoted=()=>{
+    if(votes.likedBy.includes(currentUserID)) setAlreadyLiked(true);
+    else setAlreadyLiked(false);
+    if(votes.dislikedBy.includes(currentUserID)) setAlreadyDisliked(true);
+    else setAlreadyDisliked(false);
+    }
+    //onclick increment vote,display it,post it to db
+    const addLike=()=>{
+    if(!alreadyLiked){
+    axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
+    setVoteDiff(voteDiff+1);
+    setAlreadyLiked(true);
+
+    }else{
+    axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
+    setVoteDiff(voteDiff-1);
+    setAlreadyLiked(false);
+    }
+    }
+    const addDislike=()=>{
+    if(!alreadyDisliked){
+    axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
+    setVoteDiff(voteDiff-1);
+    setAlreadyDisliked(true);
+    }else{
+    axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
+    setVoteDiff(voteDiff+1);
+    setAlreadyDisliked(false);
+    }
+    }
+
+    useEffect(()=>{
+       
+        loadVotes();
+        alreadyVoted();
+        // eslint-disable-next-line
+    },[]);
     return(
     /**content_post adds extra padding between singular posts */
     <div className="content_post">
     <div className="post_container">
     <div className="votes">
-    <div><ThumbUpIcon/></div>
-    <div>{votes.like - votes.dislike}</div>
-    <div><ThumbDownIcon/></div>
+    <div><ThumbUpIcon onClick={()=>{addLike()}} style={{color: alreadyLiked ? "greenyellow" : "white"}}/></div>
+    <div>{voteDiff}</div>
+    <div><ThumbDownIcon onClick={()=>{addDislike()}} style={{color: alreadyDisliked ? "red" : "white"}} /></div>
     </div>
     
     <div className="post_content">
     <div className="post_info"><span className="post_by">Posted by</span>
-    <span className="post_author"><a href="/u/author">m/{author}</a></span>
+    <span className="post_author"><a href="/u/author">m/{author.username}</a></span>
     <span className="post_timestamp">{timeAgo.format(Date.now() - diff)}</span>
     </div>
     <div className="post_title"><h4>{title}</h4><div className="post_flairs"></div></div>
