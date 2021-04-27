@@ -25,7 +25,7 @@ function App() {
    * runs once to load session
    */
   const loadUserData=()=>{
-    const savedUserId=JSON.parse(localStorage.getItem("user_data"));
+    const savedUserId=localStorage.getItem("user_data");
     if(savedUserId)setUserId((savedUserId));
   }
   useEffect(() => {
