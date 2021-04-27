@@ -2,10 +2,12 @@ const express = require("express");
 const router=express.Router();
 const mongoose=require("mongoose");
 const Post=require("../schemas/postSchema");
-const User=require("../schemas/userSchema");
+//const User=require("../schemas/userSchema");
 
 
 // POST new  
+// POST :id/like 
+// POST :id/dislike 
 // GET :id fetch 
 // GET :id/comments
 
@@ -19,6 +21,24 @@ res.send(`Post created by ${author}`);
 }else res.send("Post cannot be created");
 });
 
+router.post("/:id/like",async(req,res)=>{
+    const {id}=req.params;
+    const {likedBy}=req.body;
+    const likedByID=mongoose.Types.ObjectId(likedBy);
+    const foundPost=await Post.findById(id);
+    //if user already liked,remove like method is called instead
+    foundPost.handleLike(likedByID);
+    
+})
+router.post("/:id/dislike",async(req,res)=>{
+    const {id}=req.params;
+    const {dislikedBy}=req.body;
+    const dislikedByID=mongoose.Types.ObjectId(dislikedBy);
+    const foundPost=await Post.findById(id);
+    //if user already liked,remove like method is called instead
+    foundPost.handleDislike(dislikedByID);
+    
+})
 
 //display all posts
 router.get("/all",async (req,res)=>{
