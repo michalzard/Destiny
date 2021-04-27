@@ -22,7 +22,7 @@ function Register() {
         setUserName(""); 
         setPassword("");
         axios.get("http://localhost:3000/validate/session").then(data=>{
-            if(data.data)localStorage.setItem("user_data",JSON.stringify(data.data))
+            if(data.data)localStorage.setItem("user_data",data.data)
         });
         
     }

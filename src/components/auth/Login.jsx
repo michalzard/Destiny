@@ -25,7 +25,7 @@ function Login({setUser}) {
         .then(res=>{setErrorMessage(res.data.message);
         //save user session
         if(res.data.user){
-        localStorage.setItem("user_data",JSON.stringify(res.data.user));
+        localStorage.setItem("user_data",res.data.user);
         
         setUser(res.data.user)  
         };    
