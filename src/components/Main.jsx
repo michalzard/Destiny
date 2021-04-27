@@ -50,22 +50,19 @@ function Content({display,setDisplay}){
     },[display]);
     return(
         <div className="content">
-            <div>
             {display==="submit" ?  <CreatePostContainer setDisplay={setDisplay}/> :
             <>
            <CreatePostRedirect setDisplay={setDisplay}/>
            <div className="content_posts">
             {
-        
                 allPosts.map((post,i)=>{
-                return <Post key={i} author={post.author.username} title={post.title} content={post.content} 
+                return <Post key={i} _id={post._id} author={post.author} title={post.title} content={post.content} 
                 votes={post.votes} timestamp={post.createdAt} />
                 })
             }
             </div>
             </>
             }
-            </div>
         </div>
     )
 }
@@ -75,8 +72,7 @@ function CreatePostRedirect({setDisplay}){
     return(
         <div className="content_postHeader">
         <h4>Your Feed</h4>
-        <a style={{textDecoration:"none"}}>
-        <Button onClick={()=>{setDisplay("submit");}} variant="contained" color="secondary">Create Post</Button></a>
+        <Button onClick={()=>{setDisplay("submit");}} variant="contained" color="secondary">Create Post</Button>
         </div>
     )
 }
@@ -96,10 +92,10 @@ setDisplay("");
 }
 }
 const updateTitle=(e)=>{
-    setTitle(e.target.value)
+    setTitle(e.target.value);
 }
 const updateText=(e)=>{
-    setText(e.target.value)
+    setText(e.target.value);
 }
 return(
     <div className="createPostContainer">
