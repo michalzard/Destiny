@@ -11,4 +11,9 @@ body,html{
         font-family: Roboto;
         src: url(../assets/fonts/Roboto-Black.ttf);
     };
+    ::selection{
+        background-color:$red_primary;
+        color:white;
+        opacity: 0.1;
+    }
 }
