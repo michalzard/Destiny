@@ -1,54 +1,58 @@
-const mongoose=require("mongoose");
-const Schema=mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const userSchema=new Schema({
-    username:{
-        type:String,
-        required:[true,"username cannot be blank"],
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: [true, "username cannot be blank"],
+  },
+  password: {
+    type: String,
+    required: [true, "password cannot be blank"],
+  },
+  followers: {
+    followedCount: {
+      type: Number,
+      default: 0,
     },
-    password:{
-        type:String,
-        required:[true,"password cannot be blank"],
+    followedBy: [{
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    }],
+    followingCount: {
+      type: Number,
+      default: 0,
     },
-    followers:{
-        followedCount:{
-            type:Number,
-            default:0,
-        },
-        followedBy:[
-        {
-            type:Schema.Types.ObjectId,
-            ref:"User", 
-        }
-        ],
-        followingCount:{
-            type:Number,
-            default:0,
-        },
-        following:[
-            {
-            type:Schema.Types.ObjectId,
-            ref:"User",
-            }   
-        ]
-    }
+    following: [{
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    }]
+  },
+  photoURL: {
+    type: String,
+    default: "",
+  },
+  description: {
+    type: String,
+    default: "Default Description",
+  }
 })
 
 //TODO: check if userId is already there
 
-userSchema.methods.addFollowedBy=function(userObjectId){
-    if(mongoose.Types.ObjectId.isValid(userObjectId)){
+userSchema.methods.addFollowedBy = function (userObjectId) {
+  if (mongoose.Types.ObjectId.isValid(userObjectId)) {
     this.followers.followedBy.push(userObjectId);
     this.followers.followedCount++;
     this.save();
-    }
+  }
 }
-userSchema.methods.addFollowing=function(userObjectId){
-    if(mongoose.Types.ObjectId.isValid(userObjectId)
-    && !this.followers.following.equals(userObjectId)){
+userSchema.methods.addFollowing = function (userObjectId) {
+  if (mongoose.Types.ObjectId.isValid(userObjectId)) {
     this.followers.following.push(userObjectId);
+    this.followingCount++;
     this.save();
-    }
+  }
 }
 
-module.exports=mongoose.model("User",userSchema);
+module.exports = mongoose.model("User", userSchema);
