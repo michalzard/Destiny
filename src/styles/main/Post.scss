@@ -55,22 +55,25 @@
       h4 {
         padding: 10px;
         padding-left: 15px;
+        padding-bottom:0px;
       }
     }
     .post_text {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 150px;
-      padding-left: 20px;
-      padding-right: 20px;
+      min-height: 30px;
+      max-height: 200px;
+      max-width: 100%;
+      padding: 20px;
       overflow: hidden;
+      word-break:break-all;
       padding-top: 15px;
+    
     }
     .post_controls{
       padding-left:20px;
       display:flex;
       width:100%;
+      padding-top:10px;
       svg{
         width:21px;
         height: 21px;
