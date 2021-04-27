@@ -1,6 +1,7 @@
 import {OverlayTrigger,Popover} from 'react-bootstrap';
 import "../styles/main/RightSidebar.scss";
 import {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
+import defualtPfp from "../assets/images/defaultprofilepic.png"
 import PersonIcon from '@material-ui/icons/Person';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -50,6 +51,7 @@ function ProfileMenu({userId}){
 function ProfileCard({userId}){
     const [displayName,setName]=useState("");
     const [description,setDesc]=useState("");
+    const [photoURL,setPhoto]=useState("");
     const [followerCount,setFollowerCount]=useState(0);
     const [followingCount,setFollowingCount]=useState(0);
     const fetchUserData=()=>{
@@ -57,6 +59,7 @@ function ProfileCard({userId}){
     const member=data.data.member;    
     console.log(member);
     setDesc(member.description);
+    setPhoto(member.photoURL);
     setFollowerCount(member.followers.followedCount);
     setFollowingCount(member.followers.followingCount);
     setName(member.username)
@@ -70,7 +73,7 @@ function ProfileCard({userId}){
     return(
     <div className="profileCard">
     <div className="card_header">
-    <img src="" className="card_photo" alt=""></img>
+    <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt=""/>
     <div className="card_info">{displayName} <div className="info_tag">@{userId}</div></div>
     </div>
     <div className="card_followers"><span className="followers"><span>{followingCount}</span> following</span>
