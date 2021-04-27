@@ -49,11 +49,14 @@ function ProfileMenu({userId}){
 
 function ProfileCard({userId}){
     const [displayName,setName]=useState("");
+    const [description,setDesc]=useState("");
     const [followerCount,setFollowerCount]=useState(0);
     const [followingCount,setFollowingCount]=useState(0);
     const fetchUserData=()=>{
-    if(userId)axios.get(`http://localhost:3000/member/${userId}`).then(data=>{
+    if(userId) axios.get(`http://localhost:3000/m/${userId}`).then(data=>{    
     const member=data.data.member;    
+    console.log(member);
+    setDesc(member.description);
     setFollowerCount(member.followers.followedCount);
     setFollowingCount(member.followers.followingCount);
     setName(member.username)
@@ -61,7 +64,8 @@ function ProfileCard({userId}){
     }
     useEffect(()=>{
         fetchUserData();
-    });
+        // eslint-disable-next-line
+    },[]);
 
     return(
     <div className="profileCard">
@@ -69,12 +73,11 @@ function ProfileCard({userId}){
     <img src="" className="card_photo" alt=""></img>
     <div className="card_info">{displayName} <div className="info_tag">@{userId}</div></div>
     </div>
-    <div className="card_followers"><span className="followers"><span>{followerCount}</span> followers</span>
-    <span className="followers"><span>{followingCount}</span> following</span><span></span>
+    <div className="card_followers"><span className="followers"><span>{followingCount}</span> following</span>
+    <span className="followers"><span>{followerCount}</span> followers</span><span></span>
     </div>
     <div className="card_description">
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+    {description}
     </div>
     </div>
     )
