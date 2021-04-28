@@ -38,18 +38,20 @@ function Post({_id,author,title,content,votes,timestamp}){
     axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff+1);
     setAlreadyLiked(true);
-
+    if(alreadyDisliked) setAlreadyDisliked(false);
     }else{
     axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff-1);
     setAlreadyLiked(false);
     }
     }
+    //onclick decrement vote,display it,post it to db
     const addDislike=()=>{
     if(!alreadyDisliked){
     axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff-1);
     setAlreadyDisliked(true);
+    if(alreadyLiked) setAlreadyLiked(false);
     }else{
     axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff+1);
@@ -57,8 +59,7 @@ function Post({_id,author,title,content,votes,timestamp}){
     }
     }
 
-    useEffect(()=>{
-       
+      useEffect(()=>{
         loadVotes();
         alreadyVoted();
         // eslint-disable-next-line

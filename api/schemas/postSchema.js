@@ -46,6 +46,12 @@ const postSchema = new Schema({
 // check if id liked the post if they did alredy then remove like if not add 1 and add them to list
 
 postSchema.methods.handleLike=function(userObjectId){
+  if(mongoose.Types.ObjectId.isValid(userObjectId) && this.votes.dislikedBy.includes(userObjectId)){
+    const removeIndex=this.votes.dislikedBy.indexOf(userObjectId)
+    this.votes.dislikedBy.splice(removeIndex,1); 
+    this.votes.dislike--;
+    }
+    
   if(mongoose.Types.ObjectId.isValid(userObjectId) && !this.votes.likedBy.includes(userObjectId)){
     this.votes.likedBy.push(userObjectId);
     this.votes.like++;
@@ -62,6 +68,11 @@ postSchema.methods.removeLike=function(userObjectId){
   }
 }
 postSchema.methods.handleDislike=function(userObjectId){
+  if(mongoose.Types.ObjectId.isValid(userObjectId) && this.votes.likedBy.includes(userObjectId)){
+    const removeIndex=this.votes.likedBy.indexOf(userObjectId)
+    this.votes.likedBy.splice(removeIndex,1);
+    this.votes.like--;
+  }
   if(mongoose.Types.ObjectId.isValid(userObjectId) && !this.votes.dislikedBy.includes(userObjectId)){
     this.votes.dislikedBy.push(userObjectId);
     this.votes.dislike++;
@@ -77,6 +88,7 @@ postSchema.methods.removeDislike=function(userObjectId){
     this.votes.dislike--;
   }
 }
-//TODO: handle if somebody dislikes and they were previously liked,remove like,addon dislike and vice verse
+
+//TODO: comment logic
 
 module.exports=mongoose.model("Post",postSchema);
