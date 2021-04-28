@@ -3,7 +3,6 @@ const router=express.Router();
 const mongoose=require("mongoose");
 const User=require("../schemas/userSchema");
 
-// GET :id  
 
 router.get("/:id",async(req,res)=>{
     const {id} = req.params;
@@ -19,11 +18,21 @@ router.get("/:id",async(req,res)=>{
 
 router.patch("/:id/descEdit",async(req,res)=>{
     const {id}=req.params;
-    const {tokenId,description}=req.body;
-    if(id===tokenId && description){
+    const {description}=req.body;
+    if(description){
     await User.findByIdAndUpdate(id,{description:description});
-    res.send("User description updated"); 
-    }else res.send("Cannot update user description");
+    res.send({message:"Description sucessfully updated",desc:description}); 
+    }else res.send({message:"Description cannot be updated"});
+    
+});
+
+router.patch("/:id/photoURL",async(req,res)=>{
+    const {id}=req.params;
+    const {url}=req.body;
+    if(url){
+    await User.findByIdAndUpdate(id,{photoURL:url});
+    res.send({message:"photoURL sucessfully updated",url:url}); 
+    }else res.send({message:"photoURL cannot be updated"});
     
 });
 
