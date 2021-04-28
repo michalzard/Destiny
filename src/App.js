@@ -35,17 +35,13 @@ function App() {
     <div className="App">
       <Router>
       <Switch>
+      <Route path="/register"> <Register/> </Route>
+      <Route path="/login"> <Login setUser={setUserId}/> </Route>
 
-      <Route exact path="/">
-      {userId ? <Main userId={userId}/> : <Welcome/>}
+      <Route path="/">
+       {userId ? <Main userId={userId}/> : <Welcome/>}
       </Route>
-      <Route exact path="/register">
-      <Register/>
-      </Route>
-
-      <Route exact path="/login">
-      <Login setUser={setUserId} />
-      </Route>
+      
 
       </Switch>
       </Router>
