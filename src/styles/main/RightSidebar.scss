@@ -94,4 +94,11 @@
 
 .card_photoEdit{
   display:flex;
+  .photoEdit_controls{
+    display:flex;
+    align-items: center;
+    .setDefaultPhoto{
+      cursor: pointer;
+    }
+  }
 }

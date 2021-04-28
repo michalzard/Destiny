@@ -7,6 +7,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EditIcon from '@material-ui/icons/Edit';
+import BlockIcon from '@material-ui/icons/Block';
+
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 function RightSideBar({userId}){
@@ -56,13 +58,12 @@ function ProfileCard({userId}){
     const [photoURL,setPhoto]=useState("");
     const [followerCount,setFollowerCount]=useState(0);
     const [followingCount,setFollowingCount]=useState(0);
-    
+    const currentUserID=localStorage.getItem("user_data");
     //editing of description,photoURL
     const [editDesc,setEditDesc]=useState(false);
     const [editPhoto,setEditPhoto]=useState(false);
     const setEditPhotoURL=()=>{
         if(editPhoto){
-            const currentUserID=localStorage.getItem("user_data");
             const photoEditInput=document.getElementById("editPhotoField").value;
             setEditPhoto(false);
             if(currentUserID && photoEditInput){
@@ -70,9 +71,14 @@ function ProfileCard({userId}){
         }
         }else setEditPhoto(true);
     }
+    const setDefaultPhoto=()=>{
+        axios.patch(`http://localhost:3000/m/${currentUserID}/photoURL`,{url:""});
+        setPhoto("");
+        setEditPhoto(false);
+    }
+    
     const setEditDescription=()=>{
         if(editDesc){
-        const currentUserID=localStorage.getItem("user_data");
         const textEditInput=document.getElementById("editTextField").value;
         setEditDesc(false);
         if(currentUserID && textEditInput){
@@ -92,7 +98,6 @@ function ProfileCard({userId}){
     const fetchUserData=()=>{
     if(userId) axios.get(`http://localhost:3000/m/${userId}`).then(data=>{    
     const member=data.data.member;    
-    console.log(member);
     setDesc(member.description);
     setPhoto(member.photoURL);
     setFollowerCount(member.followers.followedCount);
@@ -110,14 +115,18 @@ function ProfileCard({userId}){
     {
     editPhoto ?
     <div className="card_photoEdit">
-    <TextField id="editPhotoField" fullWidth placeholder="PhotoURL" onChange={(e)=>{updateEditPhotoURL(e)}}
+    <TextField id="editPhotoField" fullWidth placeholder="Change your photo" onChange={(e)=>{updateEditPhotoURL(e)}}
     inputProps={{style:{color:"white"}}}/> 
+    <div className="photoEdit_controls">
     <Button color="secondary" variant="contained" onClick={()=>{setEditPhotoURL();}}>Submit</Button>
+    <BlockIcon className="setDefaultPhoto" onClick={()=>{setDefaultPhoto();}}/>
+    </div>
     </div>
     :
     <div className="card_header">
     <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
-    <div className="card_info">{displayName}<div className="info_tag">@{userId}</div>   
+    <div className="card_info"><a href={`m/${currentUserID}`} style={{textDecoration:"none",color:"white"}}>{displayName}</a>
+    <div className="info_tag">@{userId}</div>   
     </div>
     </div>
     }
