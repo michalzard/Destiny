@@ -18,7 +18,6 @@ function Post({_id,author,title,content,votes,timestamp}){
     const [voteDiff,setVoteDiff]=useState(0);
     const [alreadyLiked,setAlreadyLiked]=useState(false);
     const [alreadyDisliked,setAlreadyDisliked]=useState(false);
-
     const timeAgo=new TimeAgo("en-US");  
     const timestampFormatted=new Date(timestamp).getTime();
     const diff=Date.now() - timestampFormatted;
@@ -38,7 +37,7 @@ function Post({_id,author,title,content,votes,timestamp}){
     axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff+1);
     setAlreadyLiked(true);
-    if(alreadyDisliked) setAlreadyDisliked(false);
+    if(alreadyDisliked){setVoteDiff(voteDiff+2);setAlreadyDisliked(false);}
     }else{
     axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff-1);
@@ -51,18 +50,17 @@ function Post({_id,author,title,content,votes,timestamp}){
     axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff-1);
     setAlreadyDisliked(true);
-    if(alreadyLiked) setAlreadyLiked(false);
+    if(alreadyLiked){setVoteDiff(voteDiff-2);setAlreadyLiked(false);}
     }else{
     axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff+1);
     setAlreadyDisliked(false);
     }
     }
-
-      useEffect(()=>{
-        loadVotes();
-        alreadyVoted();
-        // eslint-disable-next-line
+    useEffect(()=>{
+    loadVotes();
+    alreadyVoted();
+    // eslint-disable-next-line
     },[]);
     return(
     /**content_post adds extra padding between singular posts */
@@ -76,7 +74,7 @@ function Post({_id,author,title,content,votes,timestamp}){
     
     <div className="post_content">
     <div className="post_info"><span className="post_by">Posted by</span>
-    <span className="post_author"><a href="/u/author">m/{author.username}</a></span>
+    <span className="post_author"><a href={`m/${author._id}`}>m/{author.username}</a></span>
     <span className="post_timestamp">{timeAgo.format(Date.now() - diff)}</span>
     </div>
     <div className="post_title"><h4>{title}</h4><div className="post_flairs"></div></div>
@@ -96,3 +94,4 @@ function Post({_id,author,title,content,votes,timestamp}){
 }
 
 export default Post;
+
