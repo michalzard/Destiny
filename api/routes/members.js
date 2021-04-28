@@ -29,7 +29,7 @@ router.patch("/:id/descEdit",async(req,res)=>{
 router.patch("/:id/photoURL",async(req,res)=>{
     const {id}=req.params;
     const {url}=req.body;
-    if(url){
+    if(url!==undefined){
     await User.findByIdAndUpdate(id,{photoURL:url});
     res.send({message:"photoURL sucessfully updated",url:url}); 
     }else res.send({message:"photoURL cannot be updated"});
