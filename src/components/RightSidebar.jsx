@@ -1,10 +1,12 @@
 import {OverlayTrigger,Popover} from 'react-bootstrap';
 import "../styles/main/RightSidebar.scss";
 import {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
+import {Button, TextField} from "@material-ui/core";
 import defualtPfp from "../assets/images/defaultprofilepic.png"
 import PersonIcon from '@material-ui/icons/Person';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 function RightSideBar({userId}){
@@ -54,6 +56,39 @@ function ProfileCard({userId}){
     const [photoURL,setPhoto]=useState("");
     const [followerCount,setFollowerCount]=useState(0);
     const [followingCount,setFollowingCount]=useState(0);
+    
+    //editing of description,photoURL
+    const [editDesc,setEditDesc]=useState(false);
+    const [editPhoto,setEditPhoto]=useState(false);
+    const setEditPhotoURL=()=>{
+        if(editPhoto){
+            const currentUserID=localStorage.getItem("user_data");
+            const photoEditInput=document.getElementById("editPhotoField").value;
+            setEditPhoto(false);
+            if(currentUserID && photoEditInput){
+            axios.patch(`http://localhost:3000/m/${currentUserID}/photoURL`,{url:photoURL});
+        }
+        }else setEditPhoto(true);
+    }
+    const setEditDescription=()=>{
+        if(editDesc){
+        const currentUserID=localStorage.getItem("user_data");
+        const textEditInput=document.getElementById("editTextField").value;
+        setEditDesc(false);
+        if(currentUserID && textEditInput){
+        axios.patch(`http://localhost:3000/m/${currentUserID}/descEdit`,{description:description});
+        }
+    }else setEditDesc(true);
+    }
+
+    const updateEditDescription=(e)=>{
+        setDesc(e.target.value);
+    }
+    const updateEditPhotoURL=(e)=>{
+        const checkForLink=(e.target.value.startsWith("http://") || e.target.value.startsWith("https://")) 
+        if(checkForLink) setPhoto(e.target.value);
+    }
+
     const fetchUserData=()=>{
     if(userId) axios.get(`http://localhost:3000/m/${userId}`).then(data=>{    
     const member=data.data.member;    
@@ -72,15 +107,31 @@ function ProfileCard({userId}){
 
     return(
     <div className="profileCard">
-    <div className="card_header">
-    <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt=""/>
-    <div className="card_info">{displayName} <div className="info_tag">@{userId}</div></div>
+    {
+    editPhoto ?
+    <div className="card_photoEdit">
+    <TextField id="editPhotoField" fullWidth placeholder="PhotoURL" onChange={(e)=>{updateEditPhotoURL(e)}}
+    inputProps={{style:{color:"white"}}}/> 
+    <Button color="secondary" variant="contained" onClick={()=>{setEditPhotoURL();}}>Submit</Button>
     </div>
+    :
+    <div className="card_header">
+    <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
+    <div className="card_info">{displayName}<div className="info_tag">@{userId}</div>   
+    </div>
+    </div>
+    }
     <div className="card_followers"><span className="followers"><span>{followingCount}</span> following</span>
     <span className="followers"><span>{followerCount}</span> followers</span><span></span>
     </div>
     <div className="card_description">
-    {description}
+    {editDesc ? <TextField className="editTextField" id="editTextField" placeholder={description} onChange={(e)=>{updateEditDescription(e);}}
+    inputProps={{style:{color:"white"}}} fullWidth/>
+    : description}
+    <span className="edit">
+    <EditIcon onClick={()=>{setEditDescription();}}/>
+    </span> 
+    
     </div>
     </div>
     )

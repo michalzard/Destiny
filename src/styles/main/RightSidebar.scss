@@ -1,32 +1,32 @@
 @import "../Theme.scss";
 
 .right {
-    display: flex;
-    justify-content: center;
-    flex: 0.25;
-    padding: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  flex: 0.25;
+  padding: 20px;
+}
 
-  //user info
+//user info
 .profileCard {
   display: flex;
   flex-direction: column;
   background-color: $blue_secondary;
   width: 325px;
-  height: 220px;
-  max-height: 265px;
+  max-height: 300px;
   border-radius: 10px;
   padding: 20px;
 
   .card_header {
     display: flex;
-    align-items: flex-start;
     padding: 10px;
     padding-left: 0px;
+
     .card_info {
       padding-left: 25px;
-      .info_tag{
-        width:190px;
+
+      .info_tag {
+        width: 190px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -36,6 +36,7 @@
       width: 80px;
       height: 80px;
       border-radius: 10px;
+      cursor: pointer;
     }
 
     .info_tag {
@@ -59,7 +60,19 @@
   .card_description {
     color: $blue_primary_highlight;
     padding-top: 10px;
-    overflow: hidden
+    display: flex;
+    overflow: hidden;
+    word-break: break-all;
+  }
+}
+
+.edit {
+  padding-left: 10px;
+  color: $blue_primary;
+
+  :hover {
+    color: $blue_primary_highlight;
+    cursor: pointer;
   }
 }
 
@@ -77,4 +90,8 @@
     color: $blue_primary_highlight;
     cursor: pointer;
   }
+}
+
+.card_photoEdit{
+  display:flex;
 }
