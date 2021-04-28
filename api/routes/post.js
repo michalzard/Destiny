@@ -12,12 +12,12 @@ const Post=require("../schemas/postSchema");
 // GET :id/comments
 
 router.post("/new",(req,res)=>{
-const {author,title,content} =req.body;
+const {authorId,title,content} =req.body;
 if(req.body){
-const authorObjectID=mongoose.Types.ObjectId("6085fe97a8dd3435fcbb7a24");
+const authorObjectID=mongoose.Types.ObjectId(authorId);
 const createdPost=new Post({title,author:authorObjectID,content});
 createdPost.save();
-res.send(`Post created by ${author}`);
+res.send(`Post created by ${authorObjectID}`);
 }else res.send("Post cannot be created");
 });
 
@@ -42,7 +42,7 @@ router.post("/:id/dislike",async(req,res)=>{
 
 //display all posts
 router.get("/all",async (req,res)=>{
-const allPosts=await Post.find().populate("author");
+const allPosts=await Post.find().populate("author",{password:0});
 if(allPosts){
 res.send({posts:allPosts})
 }else res.send("unable to fetch posts");
