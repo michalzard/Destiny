@@ -9,15 +9,13 @@ import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
 import Post from "./Post";
 import axios from 'axios';
-
+import {useLocation} from "react-router-dom";
 
 function Main({userId}) {
-    const [toDisplay,setToDisplay]=useState("");
-
     return (
         <div className="main">
         <div className="left"><LeftSideBar userId={userId}/></div>
-        <div className="middle"><Content display={toDisplay} setDisplay={setToDisplay} /></div>
+        <div className="middle"><Content/></div>
         <div className="right"><RightSideBar userId={userId}/></div>       
         </div>
     )
@@ -28,17 +26,16 @@ export default Main
 
 
 
-function Content({display,setDisplay}){
+function Content(){
     const [allPosts,setPosts]=useState([]);
+    const location=useLocation();
     //cost 
     const getAllPosts=()=>{
     axios.get("http://localhost:3000/post/all").then(data=>{
     if(data){
     const postsArray=data.data.posts;
-    console.log(data.data);
     for(let i=0;i<postsArray.length;i++){
-        setPosts(prev=>[...prev,postsArray[i]]);
-        
+        setPosts(prev=>[...prev,postsArray[i]]);  
     }
     }
     });
@@ -47,15 +44,16 @@ function Content({display,setDisplay}){
     useEffect(()=>{
     getAllPosts();
     return setPosts([]); //cleanup function
-    },[display]);
+    },[location.pathname]);
     return(
         <div className="content">
-            {display==="submit" ?  <CreatePostContainer setDisplay={setDisplay}/> :
+            {location.pathname==="/submit" ?  <CreatePostContainer/> :
             <>
-           <CreatePostRedirect setDisplay={setDisplay}/>
+           <CreatePostRedirect/>
            <div className="content_posts">
             {
                 allPosts.map((post,i)=>{
+                console.log(post);
                 return <Post key={i} _id={post._id} author={post.author} title={post.title} content={post.content} 
                 votes={post.votes} timestamp={post.createdAt} />
                 })
@@ -68,17 +66,17 @@ function Content({display,setDisplay}){
 }
 
 
-function CreatePostRedirect({setDisplay}){
+function CreatePostRedirect(){
     return(
         <div className="content_postHeader">
         <h4>Your Feed</h4>
-        <Button onClick={()=>{setDisplay("submit");}} variant="contained" color="secondary">Create Post</Button>
+        <Button href="/submit" variant="contained" color="secondary">Create Post</Button>
         </div>
     )
 }
 
 
-function CreatePostContainer({setDisplay}){
+function CreatePostContainer(){
 const [postTitle,setTitle]=useState("");
 const [postText,setText]=useState("");
 const createPost=()=>{
@@ -87,8 +85,6 @@ if(userId){
 axios.post("http://localhost:3000/post/new",{authorId:userId,title:postTitle,content:postText});
 setTitle("");
 setText("");
-setDisplay("");
-
 }
 }
 const updateTitle=(e)=>{
@@ -121,8 +117,8 @@ return(
     <EmoticonIcon className="postIcon"/>
     </div>
     <div className="postButton">
-    <Button  disabled={(postTitle.length>0) ? false : true}
-    variant="contained" color="secondary" onClick={()=>{createPost()}}>Post</Button>
+    <Button  disabled={(postTitle.length>0) ? false : true} href="/"
+    variant="contained" color="secondary" onClick={()=>{createPost();}}>Post</Button>
     </div>
     </div>
     </div>
