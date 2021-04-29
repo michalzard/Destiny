@@ -8,7 +8,6 @@ const User = require("./schemas/userSchema");
 const AuthRoute = require("./routes/auth");
 const MemberRoute = require("./routes/members");
 const PostRoute = require("./routes/post");
-const SessionRoute = require("./routes/auth");
 
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -23,7 +22,6 @@ mongoose.connect(process.env.DATABASE_URL, {
 app.use(express.json());
 app.use("/auth", AuthRoute);
 app.use("/m", MemberRoute);
-app.use("/validate", SessionRoute);
 app.use("/post", PostRoute);
 
 app.listen(port, () => console.log(`listening to : ${port}`))
