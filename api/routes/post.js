@@ -41,7 +41,7 @@ router.post("/:id/dislike",async(req,res)=>{
 })
 
 //display all posts
-router.get("/all",async (req,res)=>{
+router.get("/latest",async (req,res)=>{
 const allPosts=await Post.find().populate("author",{password:0});
 if(allPosts){
 res.send({posts:allPosts})
