@@ -8,24 +8,25 @@ import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EditIcon from '@material-ui/icons/Edit';
 import BlockIcon from '@material-ui/icons/Block';
+import {useHistory} from "react-router-dom";
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-function RightSideBar({userId}){
+function RightSideBar({token}){
     return(
         <div className="rightSidebar">
-        <ProfileMenu userId={userId} />
-        <ProfileCard userId={userId} />
+        <ProfileMenu/>
+        <ProfileCard token={token} />
         </div>
     )
 }
 
 export default RightSideBar;
 
-function ProfileMenu({userId}){
+function ProfileMenu(){
      const logout=()=>{
-         axios.post("http://localhost:3000/logout");
-         if(localStorage.getItem("user_data")) localStorage.removeItem("user_data");
+         axios.post("http://localhost:3000/auth/logout");
+         if(localStorage.getItem("token")) localStorage.removeItem("token");
      }
     return(
     <div className="profileMenu">
@@ -36,7 +37,7 @@ function ProfileMenu({userId}){
    <p><a href="/u/userTag" className="anchor">
    <PersonIcon /> Profile </a></p>
 
-   <p><a href="https://github.com/MichalPlatko/Destiny/issues" target="_blank" rel="noreferrer" className="anchor">
+   <p><a href="https://github.com/michalzard/Destiny/issues" target="_blank" rel="noreferrer" className="anchor">
     <BugReportIcon></BugReportIcon> Report a bug</a></p>
     <p>
     <DiscordIcon width={22} height={22} style={{fill:"#b2bdcd"}}/> <a className="anchor" href="https://discord.gg/HzXaRJcbyp">Discord</a>
@@ -52,16 +53,17 @@ function ProfileMenu({userId}){
     )
 }
 
-function ProfileCard({userId}){
+function ProfileCard({token}){
+    const history=useHistory();
     const [displayName,setName]=useState("");
     const [description,setDesc]=useState("");
     const [photoURL,setPhoto]=useState("");
     const [followerCount,setFollowerCount]=useState(0);
     const [followingCount,setFollowingCount]=useState(0);
-    const currentUserID=localStorage.getItem("user_data");
     //editing of description,photoURL
     const [editDesc,setEditDesc]=useState(false);
     const [editPhoto,setEditPhoto]=useState(false);
+    const [currentUserID,setCurrentUser]=useState("");
     const setEditPhotoURL=()=>{
         if(editPhoto){
             const photoEditInput=document.getElementById("editPhotoField").value;
@@ -94,16 +96,22 @@ function ProfileCard({userId}){
         const checkForLink=(e.target.value.startsWith("http://") || e.target.value.startsWith("https://")) 
         if(checkForLink) setPhoto(e.target.value);
     }
-
-    const fetchUserData=()=>{
-    if(userId) axios.get(`http://localhost:3000/m/${userId}`).then(data=>{    
-    const member=data.data.member;    
+    const fetchUserData=()=>{  
+    if(token){axios.get(`http://localhost:3000/auth/session?token=${token}`).then(data=>{
+    const member=data.data.user;    
+    if(member){
     setDesc(member.description);
     setPhoto(member.photoURL);
     setFollowerCount(member.followers.followedCount);
     setFollowingCount(member.followers.followingCount);
-    setName(member.username)
+    setName(member.username);
+    setCurrentUser(member._id);
+    }else{
+        if(!token)localStorage.removeItem("token");
+        history.push("/login");
+    }
     });
+    }
     }
     useEffect(()=>{
         fetchUserData();
@@ -126,7 +134,7 @@ function ProfileCard({userId}){
     <div className="card_header">
     <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
     <div className="card_info"><a href={`m/${currentUserID}`} style={{textDecoration:"none",color:"white"}}>{displayName}</a>
-    <div className="info_tag">@{userId}</div>   
+    <div className="info_tag">@{currentUserID}</div>   
     </div>
     </div>
     }

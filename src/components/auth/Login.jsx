@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 
 
 
-function Login({setUser}) {
+function Login({setUserToken}) {
     const [username,setUserName]=useState("");
     const [password,setPassword]=useState("");
     const [errorMessage,setErrorMessage]=useState("");
@@ -25,18 +25,14 @@ function Login({setUser}) {
         axios.post("http://localhost:3000/auth/login",{username:username,password:password})
         .then(res=>{setErrorMessage(res.data.message);
         //save user session
-        if(res.data.user){
-        localStorage.setItem("user_data",res.data.user);
-        
-        setUser(res.data.user)  
+        if(res.data.id){
+        localStorage.setItem("token",res.data.id);
+        setUserToken(res.data.id);  
         };    
         });
         setUserName(""); 
         setPassword("");
-        
     }
-
-    
     return (    
 
         <div className="login">

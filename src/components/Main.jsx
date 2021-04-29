@@ -11,12 +11,12 @@ import Post from "./Post";
 import axios from 'axios';
 import {useLocation} from "react-router-dom";
 
-function Main({userId}) {
+function Main({token}) {
     return (
         <div className="main">
-        <div className="left"><LeftSideBar userId={userId}/></div>
+        <div className="left"><LeftSideBar token={token}/></div>
         <div className="middle"><Content/></div>
-        <div className="right"><RightSideBar userId={userId}/></div>       
+        <div className="right"><RightSideBar token={token}/></div>       
         </div>
     )
 }
