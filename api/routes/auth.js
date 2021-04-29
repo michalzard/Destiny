@@ -13,6 +13,7 @@ const MongoDBStore=require("connect-mongodb-session")(session);
 const store=new MongoDBStore({
     uri:process.env.DATABASE_URL,
     collection:"sessions",
+    expires:1000 * 60 * 60 * 8, //8 hours
 })
 
 
