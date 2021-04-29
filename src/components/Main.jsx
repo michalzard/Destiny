@@ -31,7 +31,7 @@ function Content(){
     const location=useLocation();
     //cost 
     const getAllPosts=()=>{
-    axios.get("http://localhost:3000/post/all").then(data=>{
+    axios.get("http://localhost:3000/post/latest").then(data=>{
     if(data){
     const postsArray=data.data.posts;
     for(let i=0;i<postsArray.length;i++){
@@ -42,8 +42,9 @@ function Content(){
 
     }
     useEffect(()=>{
-    getAllPosts();
-    return setPosts([]); //cleanup function
+    if(location.pathname==="/latest") {getAllPosts();
+    return setPosts([]);
+    }
     },[location.pathname]);
     return(
         <div className="content">
