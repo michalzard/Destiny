@@ -3,6 +3,7 @@ import "../styles/auth/Login.scss";
 import {Button} from "react-bootstrap";
 import {ReactComponent as GithubIcon} from "../assets/images/github.svg";
 import  {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
+import Destiny from '../assets/images/destinyLogo.png';
 
 
 function WelcomeScreen() {
@@ -20,7 +21,7 @@ function WelcomeScreen() {
             </div>
 
             <div className="login_footer">
-            LOGO GONNA BE HERE
+            <div className="logo"><img src={Destiny} alt="Destiny logo"/></div>
             <div className="footer_info">
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&feature=youtu.be">Privacy Policy</a>
             <a href="https://github.com/MichalPlatko/Destiny/issues" >Report a bug</a>
