@@ -25,7 +25,7 @@ export default RightSideBar;
 
 function ProfileMenu(){
      const logout=()=>{
-         axios.post("http://localhost:3000/auth/logout");
+         axios.post("http://localhost:3001/auth/logout");
          if(localStorage.getItem("token")) localStorage.removeItem("token");
      }
     return(
@@ -69,12 +69,12 @@ function ProfileCard({token}){
             const photoEditInput=document.getElementById("editPhotoField").value;
             setEditPhoto(false);
             if(currentUserID && photoEditInput){
-            axios.patch(`http://localhost:3000/m/${currentUserID}/photoURL`,{url:photoURL});
+            axios.patch(`http://localhost:3001/m/${currentUserID}/photoURL`,{url:photoURL});
         }
         }else setEditPhoto(true);
     }
     const setDefaultPhoto=()=>{
-        axios.patch(`http://localhost:3000/m/${currentUserID}/photoURL`,{url:""});
+        axios.patch(`http://localhost:3001/m/${currentUserID}/photoURL`,{url:""});
         setPhoto("");
         setEditPhoto(false);
     }
@@ -84,7 +84,7 @@ function ProfileCard({token}){
         const textEditInput=document.getElementById("editTextField").value;
         setEditDesc(false);
         if(currentUserID && textEditInput){
-        axios.patch(`http://localhost:3000/m/${currentUserID}/descEdit`,{description:description});
+        axios.patch(`http://localhost:3001/m/${currentUserID}/descEdit`,{description:description});
         }
     }else setEditDesc(true);
     }
@@ -97,7 +97,7 @@ function ProfileCard({token}){
         if(checkForLink) setPhoto(e.target.value);
     }
     const fetchUserData=()=>{  
-    if(token){axios.get(`http://localhost:3000/auth/session?token=${token}`).then(data=>{
+    if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
     const member=data.data.user;    
     if(member){
     setDesc(member.description);

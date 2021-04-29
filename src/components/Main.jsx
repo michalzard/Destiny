@@ -31,7 +31,7 @@ function Content(){
     const location=useLocation();
     //cost 
     const getAllPosts=()=>{
-    axios.get("http://localhost:3000/post/latest").then(data=>{
+    axios.get("http://localhost:3001/post/latest").then(data=>{
     if(data){
     const postsArray=data.data.posts;
     for(let i=0;i<postsArray.length;i++){
@@ -54,7 +54,6 @@ function Content(){
            <div className="content_posts">
             {
                 allPosts.map((post,i)=>{
-                console.log(post);
                 return <Post key={i} _id={post._id} author={post.author} title={post.title} content={post.content} 
                 votes={post.votes} timestamp={post.createdAt} />
                 })
@@ -83,7 +82,7 @@ const [postText,setText]=useState("");
 const createPost=()=>{
 const userId=localStorage.getItem("user_data");
 if(userId){
-axios.post("http://localhost:3000/post/new",{authorId:userId,title:postTitle,content:postText});
+axios.post("http://localhost:3001/post/new",{authorId:userId,title:postTitle,content:postText});
 setTitle("");
 setText("");
 }

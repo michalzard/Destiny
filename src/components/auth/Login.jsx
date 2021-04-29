@@ -22,7 +22,7 @@ function Login({setUserToken}) {
     }
   
     const submitLoginData=()=>{
-        axios.post("http://localhost:3000/auth/login",{username:username,password:password})
+        axios.post("http://localhost:3001/auth/login",{username:username,password:password})
         .then(res=>{setErrorMessage(res.data.message);
         //save user session
         if(res.data.id){

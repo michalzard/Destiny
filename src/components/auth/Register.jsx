@@ -20,10 +20,10 @@ function Register() {
     }
 
     const submitRegisterData=()=>{
-        axios.post("http://localhost:3000/auth/register",{username:username,password:password})
+        axios.post("http://localhost:3001/auth/register",{username:username,password:password})
         setUserName(""); 
         setPassword("");
-        axios.get("http://localhost:3000/validate/session").then(data=>{
+        axios.get("http://localhost:3001/validate/session").then(data=>{
             if(data.data)localStorage.setItem("user_data",data.data)
         });
         

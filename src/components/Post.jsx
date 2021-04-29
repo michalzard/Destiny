@@ -4,6 +4,8 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import ShareIcon from '@material-ui/icons/Share';
 import BlockIcon from '@material-ui/icons/Block';
+import {Tooltip} from "@material-ui/core";
+
 //import FlagIcon from '@material-ui/icons/Flag';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import TimeAgo from 'javascript-time-ago'
@@ -34,12 +36,12 @@ function Post({_id,author,title,content,votes,timestamp}){
     //onclick increment vote,display it,post it to db
     const addLike=()=>{
     if(!alreadyLiked){
-    axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
+    axios.post(`http://localhost:3001/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff+1);
     setAlreadyLiked(true);
     if(alreadyDisliked){setVoteDiff(voteDiff+2);setAlreadyDisliked(false);}
     }else{
-    axios.post(`http://localhost:3000/post/${_id}/like`,{likedBy:currentUserID});
+    axios.post(`http://localhost:3001/post/${_id}/like`,{likedBy:currentUserID});
     setVoteDiff(voteDiff-1);
     setAlreadyLiked(false);
     }
@@ -47,16 +49,24 @@ function Post({_id,author,title,content,votes,timestamp}){
     //onclick decrement vote,display it,post it to db
     const addDislike=()=>{
     if(!alreadyDisliked){
-    axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
+    axios.post(`http://localhost:3001/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff-1);
     setAlreadyDisliked(true);
     if(alreadyLiked){setVoteDiff(voteDiff-2);setAlreadyLiked(false);}
     }else{
-    axios.post(`http://localhost:3000/post/${_id}/dislike`,{dislikedBy:currentUserID});
+    axios.post(`http://localhost:3001/post/${_id}/dislike`,{dislikedBy:currentUserID});
     setVoteDiff(voteDiff+1);
     setAlreadyDisliked(false);
     }
     }
+
+    const createSharedLink=()=>{
+        if(navigator.clipboard){
+        navigator.clipboard.writeText(`http://localhost:3001/post/${_id}`);
+        }
+    }
+
+    //on post load
     useEffect(()=>{
     loadVotes();
     alreadyVoted();
@@ -83,7 +93,9 @@ function Post({_id,author,title,content,votes,timestamp}){
     </div>
     <div className="post_controls">
     <ChatBubbleIcon/>
-    <ShareIcon/>
+    <Tooltip title="Share">
+    <ShareIcon onClick={()=>{createSharedLink();}} />
+    </Tooltip>
     <BlockIcon/>
     <MoreHorizIcon/>
     </div>
