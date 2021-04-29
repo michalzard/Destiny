@@ -29,7 +29,6 @@
     .post_info {
       padding: 5px;
       padding-left: 10px;
-  
       span {
         color: $blue_primary;
         font-size: smaller;
@@ -53,17 +52,16 @@
   
     .post_title {
       h4 {
-        padding: 10px;
         padding-left: 15px;
         padding-bottom:0px;
       }
     }
     .post_text {
       display: flex;
-      min-height: 30px;
       max-height: 200px;
       max-width: 100%;
-      padding: 20px;
+      margin-left: 20px;
+      margin-bottom: 10px;
       overflow: hidden;
       word-break:break-all;
       padding-top: 15px;

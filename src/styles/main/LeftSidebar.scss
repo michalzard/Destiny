@@ -25,12 +25,12 @@
   display:flex;
   flex-direction: column;
   align-items: flex-start;
-
+  
   width: 50%;
   .linkButton{
     display:flex;
     color:white;
-    
+    margin-bottom: 10px;  
     .text{
       padding-left: 10px;
     }
