@@ -44,9 +44,27 @@ else res.send({message:"Incorrect username or password!"});
 router.post("/logout",async (req,res)=>{
 if(req.session){
 console.log("session destroyed for "+req.session.user)
-req.session.destroy();
+req.session.user=null
 }
 });
 
+//TODO: implement db based session for users so theft of accounts will be avoided
+
+// router.get("/session",(req,res)=>{
+//     const {user}=req.session;
+//     if(user){
+//         res.send({message:"User found in session",user});
+//     }else{
+//         res.send({message:"User not found in session",s:req.session});
+//     }
+// });
+
+// const requireLogin=(req,res,next)=>{
+//     if(!req.session.user){
+//         //redirect login
+//     }
+//     next();
+// }
+   
 
 module.exports=router;
