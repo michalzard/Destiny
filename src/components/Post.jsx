@@ -4,7 +4,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import ShareIcon from '@material-ui/icons/Share';
 import BlockIcon from '@material-ui/icons/Block';
-import {Tooltip} from "@material-ui/core";
+import {Tooltip,TextField, Button} from "@material-ui/core";
 
 //import FlagIcon from '@material-ui/icons/Flag';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -16,10 +16,11 @@ import axios from "axios";
 
 TimeAgo.addDefaultLocale(en);
 
-function Post({_id,author,title,content,votes,timestamp}){
+function PostOverview({_id,author,title,content,votes,timestamp,borderless=false,borderbottom=false}){
     const [voteDiff,setVoteDiff]=useState(0);
     const [alreadyLiked,setAlreadyLiked]=useState(false);
     const [alreadyDisliked,setAlreadyDisliked]=useState(false);
+    const [shareTtp,setShareTooltip]=useState("Share");
     const timeAgo=new TimeAgo("en-US");  
     const timestampFormatted=new Date(timestamp).getTime();
     const diff=Date.now() - timestampFormatted;
@@ -59,13 +60,14 @@ function Post({_id,author,title,content,votes,timestamp}){
     setAlreadyDisliked(false);
     }
     }
-
+    //creates post link that will get copied into user's clipboard
     const createSharedLink=()=>{
         if(navigator.clipboard){
-        navigator.clipboard.writeText(`http://localhost:3001/post/${_id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/post/${_id}`);
+        setShareTooltip("Copied to clipboard");
+        setTimeout(()=>{setShareTooltip("Share")},3000);
         }
     }
-
     //on post load
     useEffect(()=>{
     loadVotes();
@@ -75,7 +77,9 @@ function Post({_id,author,title,content,votes,timestamp}){
     return(
     /**content_post adds extra padding between singular posts */
     <div className="content_post">
-    <div className="post_container">
+    <div className="post_container" 
+    style={{border: borderless ? "none" : "1px solid #5d7290",
+    borderRadius:borderbottom ? "10px 10px 0px 0px" :"10px"}}>
     <div className="votes">
     <div><ThumbUpIcon onClick={()=>{addLike()}} style={{color: alreadyLiked ? "greenyellow" : "white"}}/></div>
     <div>{voteDiff}</div>
@@ -92,18 +96,53 @@ function Post({_id,author,title,content,votes,timestamp}){
     {content}    
     </div>
     <div className="post_controls">
-    <ChatBubbleIcon/>
-    <Tooltip title="Share">
+    <Tooltip title="Comments" placement="top">
+    <a href={`http://localhost:3000/post/${_id}/comments`}><ChatBubbleIcon/></a>
+    </Tooltip>
+    <Tooltip title={shareTtp} placement="top">
     <ShareIcon onClick={()=>{createSharedLink();}} />
     </Tooltip>
     <BlockIcon/>
     <MoreHorizIcon/>
     </div>
+
     </div>
     </div>
     </div>
     )
 }
 
-export default Post;
+/**
+ * Display full post even with comments
+ */
+function FullPost({_id,author,title,content,votes,timestamp}){
+ return(
+     <>
+    <PostOverview _id={_id} borderless={true} borderbottom={true}
+    author={author} title={title} content={content} votes={votes} timestamp={timestamp} />
+    
+    <div className="post_comments">
+    <h5>Comment as author </h5>
+    <TextField placeholder="text" fullWidth/>
+    <Button variant="contained" color="secondary">Comment</Button>
+    <p>sort by "best,new"</p>
+    <p>divider goes here</p>
+    <div className="comment">
+    comment blocks
+    </div> 
+    </div>
+    </>
+ )
+}
+
+
+function PostNotFound(){
+    return(
+        <div className="not_found">
+        <h4 style={{color:"red"}}>Post not found</h4>
+        </div>
+    )
+   }
+   
+export {PostOverview,FullPost,PostNotFound};
 
