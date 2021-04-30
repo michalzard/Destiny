@@ -10,6 +10,15 @@ const Post=require("../schemas/postSchema");
 // POST :id/dislike 
 // GET :id fetch 
 // GET :id/comments
+router.get("/:id/comments",async (req,res)=>{
+    const {id}=req.params;
+    const foundPost=await Post.findById(id).populate("author",
+    {password:0,description:0,followers:0});
+    if(foundPost){
+    res.send({message:"Post found",post:foundPost});
+    }else res.send({message:"Post was not found"});
+     
+})
 
 router.post("/new",(req,res)=>{
 const {authorId,title,content} =req.body;
@@ -47,6 +56,8 @@ if(allPosts){
 res.send({posts:allPosts})
 }else res.send("unable to fetch posts");
 })
+//display post with comments 
+
 
 //TODO:display only posts from people that user that requested is following
 //TODO:way to fetch comment data to display under the post
