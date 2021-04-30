@@ -3,7 +3,6 @@
     display: flex;
     background-color: $blue_secondary;
     border-radius: 5px;
-    border: 1px solid $blue_primary;
     
     .votes {
       background-color: $blue_secondary2;
@@ -12,7 +11,7 @@
       align-items: center;
       width: 50px;
       padding-top: 10px;
-      border-radius: 5px;
+      border-radius: 10px;
   
       svg {
         cursor: pointer;
