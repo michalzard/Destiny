@@ -7,9 +7,9 @@ import EmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import {Button,TextField} from "@material-ui/core";
 import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
-import Post from "./Post";
+import {PostOverview,FullPost,PostNotFound} from "./Post";
 import axios from 'axios';
-import {useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 function Main({token}) {
     return (
@@ -27,40 +27,66 @@ export default Main
 
 
 function Content(){
-    const [allPosts,setPosts]=useState([]);
-    const location=useLocation();
-    //cost 
+    const [allOverviews,setOverviews]=useState([]);
+    const [currentPostById,setCurrentPostById]=useState({});
+    let commentID="";
+    const history=useHistory();
     const getAllPosts=()=>{
     axios.get("http://localhost:3001/post/latest").then(data=>{
     if(data){
     const postsArray=data.data.posts;
     for(let i=0;i<postsArray.length;i++){
-        setPosts(prev=>[...prev,postsArray[i]]);  
+        setOverviews(prev=>[...prev,postsArray[i]]);  
     }
     }
     });
+    }
+    const getCurrentPost=()=>{
+    axios.get(`http://localhost:3001/post/${commentID}/comments`).then(data=>{
+    const {post} = data.data;
+    if(post) {
+    setCurrentPostById(post);
+    }
+    })  
+    }
+    const setLinkID=()=>{
+        const linkId=history.location.pathname.split("/")[2];
+        commentID=linkId;
+    }
 
-    }
     useEffect(()=>{
-    if(location.pathname==="/latest") {getAllPosts();
-    return setPosts([]);
+    setLinkID();
+    if(history.location.pathname===`/post/${commentID}/comments`){ getCurrentPost();
+    return setCurrentPostById({});
     }
-    },[location.pathname]);
+    if(history.location.pathname==="/latest") {getAllPosts();
+    return setOverviews([]);
+    }
+    // eslint-disable-next-line
+    },[history.location.pathname]);
     return(
         <div className="content">
-            {location.pathname==="/submit" ?  <CreatePostContainer/> :
+            {history.location.pathname==="/submit" ?  <CreatePostContainer/> :
             <>
-           <CreatePostRedirect/>
-           <div className="content_posts">
+            <CreatePostRedirect/>
+            <div className="content_posts">
             {
-                allPosts.map((post,i)=>{
-                return <Post key={i} _id={post._id} author={post.author} title={post.title} content={post.content} 
-                votes={post.votes} timestamp={post.createdAt} />
+                Object.keys(currentPostById).length > 0 ? <FullPost _id={currentPostById._id} author={currentPostById.author} title={currentPostById.title} content={currentPostById.content}
+                votes={currentPostById.votes} timestamp={currentPostById.createdAt} />
+                : history.location.pathname===`/post/${commentID}/comments`? <PostNotFound/>
+                : null
+            }
+            {
+                allOverviews.map((post,i)=>{
+                return post ?<PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
+                votes={post.votes} timestamp={post.createdAt} /> : null
                 })
             }
+            
             </div>
             </>
             }
+           
         </div>
     )
 }
