@@ -100,12 +100,16 @@ function ProfileCard({token}){
     if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
     const member=data.data.user;    
     if(member){
+    axios.get(`http://localhost:3001/m/${member._id}`).then(data=>{ 
+    const {member}=data.data;
     setDesc(member.description);
     setPhoto(member.photoURL);
     setFollowerCount(member.followers.followedCount);
     setFollowingCount(member.followers.followingCount);
     setName(member.username);
     setCurrentUser(member._id);
+    })
+    
     }else{
         if(!token)localStorage.removeItem("token");
         history.push("/login");
@@ -117,7 +121,6 @@ function ProfileCard({token}){
         fetchUserData();
         // eslint-disable-next-line
     },[]);
-
     return(
     <div className="profileCard">
     {
@@ -133,7 +136,7 @@ function ProfileCard({token}){
     :
     <div className="card_header">
     <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
-    <div className="card_info"><a href={`m/${currentUserID}`} style={{textDecoration:"none",color:"white"}}>{displayName}</a>
+    <div className="card_info"><a href={`http://localhost:3000/m/${currentUserID}`} style={{textDecoration:"none",color:"white"}}>{displayName}</a>
     <div className="info_tag">@{currentUserID}</div>   
     </div>
     </div>
