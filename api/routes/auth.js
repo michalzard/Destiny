@@ -20,7 +20,7 @@ const store=new MongoDBStore({
 router.use(session({
 secret:process.env.SESSION_SECRET,
 resave:true,
-saveUninitialized:true,
+saveUninitialized: false, // dont save cookie when there's no data attached
 cookie:{
 httpOnly:true,
 maxAge:1000 * 60 * 60 * 8, //8 hours
@@ -43,7 +43,7 @@ router.post("/login",async (req,res)=>{
 const {username,password} = req.body;
 const user=await User.findOne({username});
 let validPassword=null;
-if(user)validPassword=await bcrypt.compare(password,user.password);    
+if(user){validPassword=await bcrypt.compare(password,user.password);}  
 if(validPassword){
 req.session.user=user;
 res.send({message:"Valid Login",id:req.sessionID});
