@@ -7,9 +7,10 @@ import EmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import {Button,TextField} from "@material-ui/core";
 import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
-import {PostOverview,FullPost,PostNotFound} from "./Post";
+import {PostOverview,FullPost,PostNotFound,FavoritesNotFound} from "./Post";
 import axios from 'axios';
 import {useHistory} from "react-router-dom";
+import UserProfile from "./UserProfile";
 
 function Main({token}) {
     
@@ -32,6 +33,10 @@ function Content({token}){
     const [currentPostById,setCurrentPostById]=useState({});
     let commentID="";
     const history=useHistory();
+
+    const [currentUserView,setUserView]=useState(""); 
+    //holds current id from m/id so correct userProfile is displayed
+
     const getAllPosts=()=>{
     axios.get("http://localhost:3001/post/latest").then(data=>{
     if(data){
@@ -56,7 +61,10 @@ function Content({token}){
         const linkId=history.location.pathname.split("/")[2];
         commentID=linkId;
     }
-
+    const checkProfile=()=>{
+        const {pathname}=history.location;
+        setUserView(pathname.split("/")[2]);
+    }
     useEffect(()=>{
     setLinkID();
     if(history.location.pathname===`/post/${commentID}/comments`){ getCurrentPost();
@@ -65,8 +73,10 @@ function Content({token}){
     if(history.location.pathname==="/latest") {getAllPosts();
     return setOverviews([]);
     }
+    checkProfile();
     // eslint-disable-next-line
     },[history.location.pathname]);
+    
     return(
         <div className="content">
             {history.location.pathname==="/submit" ?  <CreatePostContainer token={token}/> :
@@ -74,22 +84,27 @@ function Content({token}){
             <CreatePostRedirect/>
             <div className="content_posts">
             {
-                Object.keys(currentPostById).length > 0 ? <FullPost _id={currentPostById._id} author={currentPostById.author} title={currentPostById.title} content={currentPostById.content}
-                votes={currentPostById.votes} timestamp={currentPostById.createdAt} />
+                history.location.pathname==="/" ? <FavoritesNotFound/> : null 
+            }
+            {
+                history.location.pathname===`/m/${currentUserView}` ? <UserProfile id={currentUserView}/> : null //instead of null display F 
+            }
+            {
+                Object.keys(currentPostById).length > 0 ?  <FullPost _id={currentPostById._id} author={currentPostById.author} title={currentPostById.title} content={currentPostById.content}
+                votes={currentPostById.votes} timestamp={currentPostById.createdAt} comments={currentPostById.comments}/>
                 : history.location.pathname===`/post/${commentID}/comments`? <PostNotFound/>
                 : null
             }
             {
                 allOverviews.map((post,i)=>{
                 return post ?<PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
-                votes={post.votes} timestamp={post.createdAt} /> : null
+                votes={post.votes} timestamp={post.createdAt} /> : "NO POSTS AVAIL"
                 })
             }
             
             </div>
             </>
-            }
-           
+            }           
         </div>
     )
 }
@@ -152,7 +167,7 @@ return(
     <EmoticonIcon className="postIcon"/>
     </div>
     <div className="postButton">
-    <Button  disabled={(postTitle.length>0) ? false : true} href="/"
+    <Button  disabled={(postTitle.length>0) ? false : true} href="/latest"
     variant="contained" color="secondary" onClick={()=>{createPost();}}>Post</Button>
     </div>
     </div>
