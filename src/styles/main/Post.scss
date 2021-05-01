@@ -1,89 +1,174 @@
 @import "../Theme.scss";
+
 .post_container {
+  display: flex;
+  background-color: $blue_secondary;
+  border-radius: 5px;
+
+  .votes {
+    background-color: $blue_secondary2;
     display: flex;
-    background-color: $blue_secondary;
-    border-radius: 5px;
-    
-    .votes {
-      background-color: $blue_secondary2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 50px;
-      padding-top: 10px;
-      border-radius: 10px;
-  
-      svg {
-        cursor: pointer;
-      }
-  
-      div:nth-child(1):hover {
-        color: greenyellow;
-      }
-  
-      div:nth-child(3):hover {
-        color: red;
-      }
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    padding-top: 10px;
+    border-radius: 10px;
+
+    svg {
+      cursor: pointer;
     }
-    .post_info {
-      padding: 5px;
-      padding-left: 10px;
-      span {
-        color: $blue_primary;
-        font-size: smaller;
-        padding-left: 5px;
-      }
+
+    div:nth-child(1):hover {
+      color: greenyellow;
     }
-    .post_author{
-     a{
-       color:$blue_primary;
-       text-decoration: none;
-     }
-     :hover{
-      color:$blue_primary_highlight;
-   }
+
+    div:nth-child(3):hover {
+      color: red;
     }
-    .post_content {
-      display: flex;
-      flex-direction: column;
+  }
+
+  .post_info {
+    padding: 5px;
+    padding-left: 10px;
+
+    span {
+      color: $blue_primary;
+      font-size: smaller;
+      padding-left: 5px;
+    }
+  }
+
+  .post_author {
+    a {
+      color: $blue_primary;
+      text-decoration: none;
+    }
+
+    :hover {
+      color: $blue_primary_highlight;
+    }
+  }
+
+  .post_content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .post_title {
+    h4 {
+      padding-left: 15px;
+      padding-bottom: 0px;
+    }
+  }
+
+  .post_text {
+    display: flex;
+    max-height: 200px;
+    max-width: 100%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    word-break: break-all;
+    padding-top: 15px;
+
+  }
+
+  .post_controls {
+    padding-left: 20px;
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+
+    svg {
+      width: 21px;
+      height: 21px;
+      fill: $blue_primary;
+    }
+
+    :hover {
+      fill: white;
+      cursor: pointer;
+    }
+
+    :not(:first-child) {
+      margin-left: 15px;
+    }
+  }
+
+}
+
+.post_comments {
+  display: flex;
+  flex-direction: column;
+  background-color: $blue_secondary;
+  padding: 20px;
+
+  .add_comment {
+    display: flex;
+    background-color: $blue_secondary2;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    border-radius: 10px;
+
+    .area {
+      background-color: inherit;
+      color: white;
+      padding-left: 20px;
+      min-height: 150px;
+      max-height: 250px;
       width: 100%;
     }
-  
-    .post_title {
-      h4 {
-        padding-left: 15px;
-        padding-bottom:0px;
-      }
-    }
-    .post_text {
-      display: flex;
-      max-height: 200px;
-      max-width: 100%;
-      margin-left: 20px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      word-break:break-all;
-      padding-top: 15px;
-    
-    }
-    .post_controls{
-      padding-left:20px;
-      display:flex;
-      width:100%;
-      padding-top:10px;
-      svg{
-        width:21px;
-        height: 21px;
-        fill:$blue_primary;
-      }
-      :hover{
-        fill:white;
+  }
+
+  .sort_by {
+    padding: 10px;
+    border-bottom: 1px solid gray;
+    display: flex;
+    align-items: center;
+
+    .sort_info {
+      padding-left: 10px;
+
+      span {
+        color: lightskyblue;
         cursor: pointer;
-      }
-      :not(:first-child){
-        margin-left: 15px;
+        margin-top: 2px;
       }
     }
-  
+  }
 }
-  
+.MuiPaper-rounded {
+  border-radius: 0px;
+}
+.sort_selection {
+  display: flex;
+  flex-direction: column;
+  background-color: $blue_secondary;
+  width:100px;
+  button {
+    color: lightskyblue;
+  }
+}
+
+.comment{
+  display:flex;
+  flex-direction: column;
+  background-color: rgba(255,0,0,0.2);
+  color: $blue_primary;
+  text-decoration: none;
+  .info{
+  padding:5px;
+  font-size: smaller;
+  .author{
+    margin:5px;
+    a{
+      color: $blue_primary;
+    }
+    :hover {
+      color: $blue_primary_highlight;
+    }
+  }
+  }
+}
