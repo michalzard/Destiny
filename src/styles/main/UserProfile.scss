@@ -1,0 +1,63 @@
+@import "../Theme.scss";
+
+.user_profile{
+    display:flex;
+    flex-direction: column;
+    .header_info{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    padding-left: 20px;
+    .header{
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .name{
+    padding-top:5px;
+        h5{
+            margin:0;
+        }
+    }
+    .tag{
+    color:gray;;
+    }
+    img{
+        width:100px;
+        height: 100px;
+        border-radius: 50px;
+    }
+    }
+    .description{
+        display: flex;
+        span{
+            padding-right: 20px;
+        }
+        .date{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .timestamp{
+            padding-left: 10px;
+        }
+    }
+    .followers{
+        padding-top: 10px;
+        span{
+            padding-right: 20px;
+            color:$blue_primary;
+        }
+    }
+    .sort_by{
+    padding:20px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    .btnSelect{
+    color:white;
+    width:200px;
+    }
+    }
+}
