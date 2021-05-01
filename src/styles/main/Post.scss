@@ -151,13 +151,18 @@
     color: lightskyblue;
   }
 }
-
+.all_comments{
+  display:flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: space-between;
+}
 .comment{
   display:flex;
   flex-direction: column;
-  background-color: rgba(255,0,0,0.2);
   color: $blue_primary;
   text-decoration: none;
+  padding:10px;
   .info{
   padding:5px;
   font-size: smaller;
@@ -170,5 +175,23 @@
       color: $blue_primary_highlight;
     }
   }
+  }
+  .content{
+    border:0; //got rid of random 1px solid border
+    padding-left: 0;
+    color:white;
+  }
+}
+
+.comment_notfound{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color:$blue_primary_highlight;
+  padding:20px;
+  padding-top:40px;
+  span{
+    padding:10px;
   }
 }
