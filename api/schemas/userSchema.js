@@ -36,7 +36,7 @@ const userSchema = new Schema({
     type: String,
     default: "Default Description",
   }
-})
+},{timestamps:true});
 
 //TODO: check if userId is already there
 
