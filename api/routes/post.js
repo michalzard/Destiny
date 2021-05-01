@@ -12,17 +12,17 @@ const Post=require("../schemas/postSchema");
 // GET :id/comments
 router.get("/:id/comments",async (req,res)=>{
     const {id}=req.params;
+    if(mongoose.Types.ObjectId.isValid(id)){
     const foundPost=await Post.findById(id).populate("author",
     {password:0,description:0,followers:0});
     if(foundPost){
     res.send({message:"Post found",post:foundPost});
-    }else res.send({message:"Post was not found"});
-     
+    }}else res.send({message:"Post was not found"});
 })
 
 router.post("/new",(req,res)=>{
 const {authorId,title,content} =req.body;
-if(req.body){
+if(mongoose.Types.ObjectId.isValid(authorId)){
 const authorObjectID=mongoose.Types.ObjectId(authorId);
 const createdPost=new Post({title,author:authorObjectID,content});
 createdPost.save();
@@ -30,6 +30,9 @@ res.send(`Post created by ${authorObjectID}`);
 }else res.send("Post cannot be created");
 });
 
+router.post("/:id/newComment",(req,res)=>{
+  //CREATE NEW COMMENT,SAVE TO DB,ADD TO ARRAY IN POST
+});
 router.post("/:id/like",async(req,res)=>{
     const {id}=req.params;
     const {likedBy}=req.body;
