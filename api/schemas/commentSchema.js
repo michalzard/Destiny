@@ -10,7 +10,12 @@ author:{
 content:{
     type:String,
     required:[true,"Cannot create comment without its content"],
+},
+
+post:{
+    type:Schema.Types.ObjectId,
 }
+
 },{timestamps:true});
 
 /**
@@ -20,4 +25,4 @@ content:{
  * 
  */
 
-module.exports=mongoose.model("Post",commentSchema);
+module.exports=mongoose.model("Comment",commentSchema);
