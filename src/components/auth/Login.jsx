@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, {useState} from 'react'
 import "../../styles/auth/Login.scss";
 import {Button} from "react-bootstrap";
 import {ReactComponent as GithubIcon} from "../../assets/images/github.svg";
@@ -6,7 +6,7 @@ import  {ReactComponent as DiscordIcon} from "../../assets/images/discord.svg";
 import Destiny from '../../assets/images/destinyLogo.png';
 import {TextField} from "@material-ui/core";
 import axios from "axios";
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -14,6 +14,7 @@ function Login({setUserToken}) {
     const [username,setUserName]=useState("");
     const [password,setPassword]=useState("");
     const [errorMessage,setErrorMessage]=useState("");
+    const history=useHistory();
     const getUsername=(e)=>{
         setUserName(e.target.value);
     }
@@ -22,8 +23,10 @@ function Login({setUserToken}) {
     }
   
     const submitLoginData=()=>{
+        console.log("fired once");
         axios.post("http://localhost:3001/auth/login",{username:username,password:password})
         .then(res=>{setErrorMessage(res.data.message);
+        if(res.data.message.startsWith("Valid") || res.data.id) history.push("/");
         //save user session
         if(res.data.id){
         localStorage.setItem("token",res.data.id);
@@ -47,7 +50,6 @@ function Login({setUserToken}) {
             </div>
             <div style={{color:"red"}}>{errorMessage}</div>
             
-            {errorMessage.startsWith("Valid") ? <Redirect to="/"/> : null}
 
             <Button variant="danger" onClick={()=>{submitLoginData()}}
             disabled={(username.length>0 && password.length>0) ? false : true}>Login</Button> 
