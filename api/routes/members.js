@@ -2,14 +2,16 @@ const express = require("express");
 const router=express.Router();
 const mongoose=require("mongoose");
 const User=require("../schemas/userSchema");
+const Post=require("../schemas/postSchema");
 
 
 router.get("/:id",async(req,res)=>{
     const {id} = req.params;
     if(mongoose.Types.ObjectId.isValid(id)){
     const user=await User.findById(id,{password:0});
+    const postsByUser=await Post.find({author:user._id}).populate("author");
     //returns found user with password excluded 
-    res.send({message:"Member found",member:user});
+    res.send({message:"Member found",member:user,posts:postsByUser});
     }else{
         res.send({message:"Member not found"});
     }   
