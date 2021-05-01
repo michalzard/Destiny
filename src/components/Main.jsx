@@ -12,10 +12,11 @@ import axios from 'axios';
 import {useHistory} from "react-router-dom";
 
 function Main({token}) {
+    
     return (
         <div className="main">
         <div className="left"><LeftSideBar token={token}/></div>
-        <div className="middle"><Content/></div>
+        <div className="middle"><Content token={token}/></div>
         <div className="right"><RightSideBar token={token}/></div>       
         </div>
     )
@@ -26,7 +27,7 @@ export default Main
 
 
 
-function Content(){
+function Content({token}){
     const [allOverviews,setOverviews]=useState([]);
     const [currentPostById,setCurrentPostById]=useState({});
     let commentID="";
@@ -34,9 +35,11 @@ function Content(){
     const getAllPosts=()=>{
     axios.get("http://localhost:3001/post/latest").then(data=>{
     if(data){
-    const postsArray=data.data.posts;
+    const postsArray=data.data.posts.reverse();
+    //reversed array so new posts are shown on top (descending)
     for(let i=0;i<postsArray.length;i++){
-        setOverviews(prev=>[...prev,postsArray[i]]);  
+        setOverviews(prev=>[...prev,postsArray[i]]);
+        
     }
     }
     });
@@ -66,7 +69,7 @@ function Content(){
     },[history.location.pathname]);
     return(
         <div className="content">
-            {history.location.pathname==="/submit" ?  <CreatePostContainer/> :
+            {history.location.pathname==="/submit" ?  <CreatePostContainer token={token}/> :
             <>
             <CreatePostRedirect/>
             <div className="content_posts">
@@ -102,11 +105,11 @@ function CreatePostRedirect(){
 }
 
 
-function CreatePostContainer(){
+function CreatePostContainer({token}){
 const [postTitle,setTitle]=useState("");
 const [postText,setText]=useState("");
+const [userId,setUserId]=useState("");
 const createPost=()=>{
-const userId=localStorage.getItem("user_data");
 if(userId){
 axios.post("http://localhost:3001/post/new",{authorId:userId,title:postTitle,content:postText});
 setTitle("");
@@ -119,6 +122,12 @@ const updateTitle=(e)=>{
 const updateText=(e)=>{
     setText(e.target.value);
 }
+useEffect(()=>{
+if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
+const {_id}=data.data.user;
+setUserId(_id);
+})}
+},[token]);
 return(
     <div className="createPostContainer">
     <h5>Create a post</h5>
