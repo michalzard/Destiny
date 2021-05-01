@@ -26,7 +26,7 @@ function Login({setUserToken}) {
         console.log("fired once");
         axios.post("http://localhost:3001/auth/login",{username:username,password:password})
         .then(res=>{setErrorMessage(res.data.message);
-        if(res.data.message.startsWith("Valid") || res.data.id) history.push("/");
+        if(res.data.message.startsWith("Valid"))history.push("/");
         //save user session
         if(res.data.id){
         localStorage.setItem("token",res.data.id);
