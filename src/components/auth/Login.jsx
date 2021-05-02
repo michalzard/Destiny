@@ -6,7 +6,7 @@ import  {ReactComponent as DiscordIcon} from "../../assets/images/discord.svg";
 import Destiny from '../../assets/images/destinyLogo.png';
 import {TextField} from "@material-ui/core";
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -14,7 +14,7 @@ function Login({setUserToken}) {
     const [username,setUserName]=useState("");
     const [password,setPassword]=useState("");
     const [errorMessage,setErrorMessage]=useState("");
-    const history=useHistory();
+    //const history=useHistory();
     const getUsername=(e)=>{
         setUserName(e.target.value);
     }
@@ -26,7 +26,6 @@ function Login({setUserToken}) {
         console.log("fired once");
         axios.post("http://localhost:3001/auth/login",{username:username,password:password})
         .then(res=>{setErrorMessage(res.data.message);
-        if(res.data.message.startsWith("Valid"))history.push("/");
         //save user session
         if(res.data.id){
         localStorage.setItem("token",res.data.id);
@@ -39,6 +38,7 @@ function Login({setUserToken}) {
     return (    
 
         <div className="login">
+            {errorMessage.startsWith("Valid") ? <Redirect to="/"/>: null}
             <div className="login_div">
             <div className="login_panel">
             <h3>Login </h3>
