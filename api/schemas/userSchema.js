@@ -41,18 +41,36 @@ const userSchema = new Schema({
 //TODO: check if userId is already there
 
 userSchema.methods.addFollowedBy = function (userObjectId) {
-  if (mongoose.Types.ObjectId.isValid(userObjectId)) {
+  if (mongoose.Types.ObjectId.isValid(userObjectId) && !this.followers.followedBy.includes(userObjectId)) {
     this.followers.followedBy.push(userObjectId);
     this.followers.followedCount++;
-    this.save();
   }
+  this.save();
+}
+userSchema.methods.removeFollowed = function(userObjectId){
+  if(mongoose.Types.ObjectId.isValid(userObjectId)){
+    const removeIndex=this.followers.followedBy.indexOf(userObjectId);
+    console.log(removeIndex);
+    this.followers.followedBy.splice(removeIndex,1);
+    this.followers.followedCount--;
+  }
+  this.save();
 }
 userSchema.methods.addFollowing = function (userObjectId) {
-  if (mongoose.Types.ObjectId.isValid(userObjectId)) {
+  if (mongoose.Types.ObjectId.isValid(userObjectId) && !this.followers.following.includes(userObjectId)) {
     this.followers.following.push(userObjectId);
-    this.followingCount++;
-    this.save();
+    this.followers.followingCount++;
   }
+  this.save();
+}
+userSchema.methods.removeFollowing= function(userObjectId){
+  if(mongoose.Types.ObjectId.isValid(userObjectId)){
+    const removeIndex=this.followers.following.indexOf(userObjectId);
+    console.log(removeIndex);
+    this.followers.following.splice(removeIndex,1);
+    this.followers.followingCount--;
+  }
+  this.save();
 }
 
 module.exports = mongoose.model("User", userSchema);
