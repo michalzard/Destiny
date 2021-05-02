@@ -9,6 +9,7 @@ import {PostOverview,LikesNotFound} from "../components//Post";
 function UserProfile({id}) {
     const [userInfo,setUserInfo]=useState({});
     const [userPosts,setUserPosts]=useState([]);
+    const [userLikedPosts,setUserLikedPosts]=useState([]);
     const [selected,setSelected]=useState("Posts");
     const changeSelected=(select)=>{
         setSelected(select);
@@ -27,7 +28,8 @@ function UserProfile({id}) {
     }
     const fetchUserData=()=>{
         axios.get(`http://localhost:3001/m/${id}`).then(data=>{
-            const {member,posts}=data.data;
+            const {member,posts,likes}=data.data;
+            setUserLikedPosts(likes);
             setUserInfo(member);
             setUserPosts(posts);
         })
@@ -35,15 +37,29 @@ function UserProfile({id}) {
     useEffect(() => {
         fetchCurrentUser();
         fetchUserData();
+        // eslint-disable-next-line
     }, []);
+    const followUser=()=>{
+    if(currentUserID && userInfo){
+    if(!userInfo.followers.followedBy.includes(currentUserID))
+    axios.post(`http://localhost:3001/m/${userInfo._id}/follow`,{followedBy:currentUserID});
+    else axios.post(`http://localhost:3001/m/${userInfo._id}/unfollow`,{unfollowedBy:currentUserID});
+    }
+    }
     return (
         <div className="user_profile">
         <div className="header_info">
         <div className="header">
-        <img src={userInfo.photoURL==="" ? defaultPfp : userInfo.photoURL}></img>
+        <img src={userInfo.photoURL==="" ? defaultPfp : userInfo.photoURL} alt="User profile"></img>
         
         { //if looking at your own profile,remove option to follow
-        userInfo._id!==currentUserID ? <Button variant="outlined" color="secondary">Follow</Button> : null}
+        userInfo._id!==currentUserID ? 
+        <Button variant="outlined" color="secondary" href={`http://localhost:3000/m/${userInfo._id}`}
+        onClick={followUser}>{
+        userInfo.followers ?
+        userInfo.followers.followedBy.includes(currentUserID) ? "Unfollow" : "Follow"
+        : null}</Button>
+        : null}
         </div>
         <span className="name"><h5>{userInfo.username}</h5></span>
         <span className="tag">@{id}</span>
@@ -79,7 +95,15 @@ function UserProfile({id}) {
             return post ?<PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
             votes={post.votes} timestamp={post.createdAt} /> : "NO POSTS AVAIL"
             })
-            :  selected==="Likes" ?  <LikesNotFound/> : "WIP"
+            :  selected==="Likes" ?  
+            userLikedPosts.length>0 ?
+            userLikedPosts.map((post,i)=>{
+            return post ? <PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
+            votes={post.votes} timestamp={post.createdAt} /> : "NO POSTS AVAIL"
+            })
+            :<LikesNotFound/>
+
+            : "WIP"
             
            
         }
