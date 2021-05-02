@@ -30,12 +30,21 @@ export default Main
 
 function Content({token}){
     const [allOverviews,setOverviews]=useState([]);
+    const [favOverviews,setFavOverviews]=useState([]);
     const [currentPostById,setCurrentPostById]=useState({});
     let commentID="";
     const history=useHistory();
 
     const [currentUserView,setUserView]=useState(""); 
     //holds current id from m/id so correct userProfile is displayed
+    const fetchUserData=()=>{  
+    if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
+    const member=data.data.user;    
+    if(member){
+    axios.get(`http://localhost:3001/m/${member._id}/followers`).then(data=>{ 
+    const {followerPosts}=data.data;
+    setFavOverviews(followerPosts);
+    })}})}}
 
     const getAllPosts=()=>{
     axios.get("http://localhost:3001/post/latest").then(data=>{
@@ -43,13 +52,12 @@ function Content({token}){
     const postsArray=data.data.posts.reverse();
     //reversed array so new posts are shown on top (descending)
     for(let i=0;i<postsArray.length;i++){
-        setOverviews(prev=>[...prev,postsArray[i]]);
-        
+        setOverviews(prev=>[...prev,postsArray[i]]); 
     }
     }
     });
     }
-    const getCurrentPost=()=>{
+    const getCurrentPostComments=()=>{
     axios.get(`http://localhost:3001/post/${commentID}/comments`).then(data=>{
     const {post} = data.data;
     if(post) {
@@ -66,8 +74,9 @@ function Content({token}){
         setUserView(pathname.split("/")[2]);
     }
     useEffect(()=>{
+    fetchUserData();
     setLinkID();
-    if(history.location.pathname===`/post/${commentID}/comments`){ getCurrentPost();
+    if(history.location.pathname===`/post/${commentID}/comments`){ getCurrentPostComments();
     return setCurrentPostById({});
     }
     if(history.location.pathname==="/latest") {getAllPosts();
@@ -84,7 +93,14 @@ function Content({token}){
             <CreatePostRedirect/>
             <div className="content_posts">
             {
-                history.location.pathname==="/" ? <FavoritesNotFound/> : null 
+                history.location.pathname==="/" ? 
+                favOverviews.length>0 ?
+                favOverviews.map((post,i)=>{
+                return post ? <PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
+                votes={post.votes} timestamp={post.createdAt} /> : null
+                })
+                : <FavoritesNotFound/>
+                : null 
             }
             {
                 history.location.pathname===`/m/${currentUserView}` ? <UserProfile id={currentUserView}/> : null //instead of null display F 
@@ -98,10 +114,9 @@ function Content({token}){
             {
                 allOverviews.map((post,i)=>{
                 return post ?<PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
-                votes={post.votes} timestamp={post.createdAt} /> : "NO POSTS AVAIL"
+                votes={post.votes} timestamp={post.createdAt} /> : null
                 })
             }
-            
             </div>
             </>
             }           
