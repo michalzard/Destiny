@@ -4,14 +4,14 @@ import {Button} from "react-bootstrap";
 import {ReactComponent as GithubIcon} from "../../assets/images/github.svg";
 import  {ReactComponent as DiscordIcon} from "../../assets/images/discord.svg";
 import Destiny from '../../assets/images/destinyLogo.png';
-
+import {Redirect} from "react-router-dom";
 import {TextField} from "@material-ui/core";
 import axios from "axios";
 
 function Register() {
     const [username,setUserName]=useState("");
     const [password,setPassword]=useState("");
-
+    const [errorMessage,setErrorMessage]=useState("");
     const getUsername=(e)=>{
         setUserName(e.target.value);
     }
@@ -20,18 +20,23 @@ function Register() {
     }
 
     const submitRegisterData=()=>{
-        axios.post("http://localhost:3001/auth/register",{username:username,password:password})
+        let token="";
+        axios.post("http://localhost:3001/auth/register",{username:username,password:password}).then(data=>{
+            const{id,message}=data.data;
+            token=id;
+            setErrorMessage(message);
+        })
         setUserName(""); 
         setPassword("");
-        axios.get("http://localhost:3001/validate/session").then(data=>{
-            if(data.data)localStorage.setItem("user_data",data.data)
+        axios.get(`http://localhost:3001/auth/session?${token}`).then(data=>{
+            if(data.data)localStorage.setItem("token",data.data)
         });
         
     }
     
     return (       
         <div className="register">
-            
+            {errorMessage==="Registered" ? <Redirect to="/login" /> : null}
             <div className="register_div">
             <div className="register_panel">
             <h3>Create your account</h3>
@@ -43,10 +48,8 @@ function Register() {
             error={password.length<8 && password.length>=1} helperText={password.length<8 && password.length>=1 ? "Password needs to be atleast 8 characters long" : null}
             InputLabelProps={{style:{color:"white"}}} placeholder="Password" label="Password" type="password"/>
             </div>
-
-            
-            <Button variant="danger" onClick={()=>{submitRegisterData()}} href="/login"
-            disabled={(username.length>5 && password.length>=8) ? false : true}
+            {errorMessage ? <span style={{color:"red"}}>{errorMessage}</span> : null}
+            <Button variant="danger" onClick={()=>{submitRegisterData()}} disabled={(username.length>5 && password.length>=8) ? false : true}
             >Register</Button> 
             <a href="/login" style={{color:"#BFFFBC"}}>Already have an account?</a>
             </div>
@@ -56,9 +59,9 @@ function Register() {
             <div className="logo"><img src={Destiny} alt="Destiny logo"/></div>
             <div className="footer_info">
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&feature=youtu.be">Privacy Policy</a>
-            <a href="https://github.com/MichalPlatko/Destiny/issues" >Report a bug</a>
+            <a href="https://github.com/michalzard/Destiny/issues" >Report a bug</a>
             <div className="footer_icons">
-            <a href="https://github.com/MichalPlatko/Destiny">
+            <a href="https://github.com/michalzard/Destiny">
             <GithubIcon className="footer_icon" width={25} height={25}style={{fill:"#5d7290"}}/></a>
             <a href="https://discord.gg/HzXaRJcbyp">
             <DiscordIcon className="footer_icon"  width={25} height={25}style={{fill:"#5d7290"}}/></a>
