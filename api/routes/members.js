@@ -4,19 +4,30 @@ const mongoose=require("mongoose");
 const User=require("../schemas/userSchema");
 const Post=require("../schemas/postSchema");
 
-
 router.get("/:id",async(req,res)=>{
     const {id} = req.params;
     if(mongoose.Types.ObjectId.isValid(id)){
     const user=await User.findById(id,{password:0});
     const postsByUser=await Post.find({author:user._id}).populate("author");
+    const postsLikedByUser=await Post.find({"votes.likedBy":id}).populate("author");
     //returns found user with password excluded 
-    res.send({message:"Member found",member:user,posts:postsByUser});
+    res.send({message:"Member found",member:user,posts:postsByUser,likes:postsLikedByUser});
     }else{
         res.send({message:"Member not found"});
     }   
 });
 
+router.get("/:id/followers",async(req,res)=>{
+    const {id} = req.params;
+    if(mongoose.Types.ObjectId.isValid(id)){
+    const user=await User.findById(id,{password:0});
+    const postsByWhoUserFollows=await Post.find({author:user.followers.following}).populate("author",{password:0});
+    //returns found user with password excluded 
+    res.send({message:"Follower posts found",followerPosts:postsByWhoUserFollows});
+    }else{
+        res.send({message:"Member not found"});
+    }   
+});
 
 router.patch("/:id/descEdit",async(req,res)=>{
     const {id}=req.params;
@@ -38,6 +49,35 @@ router.patch("/:id/photoURL",async(req,res)=>{
     
 });
 
+router.post("/:id/follow",async(req,res)=>{
+    const {id} = req.params;
+    const {followedBy} =req.body;
+    console.log("follow req")
+    if(mongoose.Types.ObjectId.isValid(id)){
+     //user that made follow request
+    const followingUser=await User.findById(followedBy);
+    //user that receives follow 
+    const followedUser=await User.findById(id);
+    followedUser.addFollowedBy(followedBy);
+    followingUser.addFollowing(id);
+    res.send({message:"User followed",_id:id});
+    }
+});
+
+router.post("/:id/unfollow",async(req,res)=>{
+    const {id} = req.params;
+    const {unfollowedBy} =req.body;
+    console.log("unfollow req")
+    if(mongoose.Types.ObjectId.isValid(id)){
+     //user that made follow request
+    const followingUser=await User.findById(unfollowedBy);
+    //user that receives unfollow 
+    const followedUser=await User.findById(id);
+    followedUser.removeFollowed(unfollowedBy);
+    followingUser.removeFollowing(id);
+    res.send({message:"User followed",_id:id});
+    }
+});
 module.exports=router;
 
 //TODO protect description edit
