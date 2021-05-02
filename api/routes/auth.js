@@ -31,11 +31,14 @@ store:store,
 router.post("/register",async (req,res)=>{
 const {username,password} = req.body;
 if(username && password){
+const uniqueNameCheck=await User.findOne({username});
+if(uniqueNameCheck===null){
 const hashedPassword=await bcrypt.hash(password,12);
 const registeredUser=new User({username,password:hashedPassword});
 await registeredUser.save();
 req.session.user=registeredUser;
 res.send({message:"Registered",id:req.sessionID});
+}else res.send({message:"This name is already in use"});
 }else res.send("username or password cannot be blank");
 });
 
