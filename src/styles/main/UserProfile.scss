@@ -53,11 +53,10 @@
     .sort_by{
     padding:20px;
     display:flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     .btnSelect{
     color:white;
-    width:200px;
     }
     }
 }

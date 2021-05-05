@@ -81,11 +81,7 @@ function UserProfile({id}) {
         </div>
         <div  style={{borderBottom:selected==="Likes" ? "1px solid red" : null}}>
         <Button variant="text" className="btnSelect" onClick={()=>{changeSelected("Likes")}}>Likes</Button>
-        </div>
-        <div  style={{borderBottom:selected==="WIP" ? "1px solid red" : null}}>
-        <Button variant="text" className="btnSelect" onClick={()=>{changeSelected("WIP")}}>WIP</Button>
-        </div>
-        
+        </div>      
         </div>
         </div>
         

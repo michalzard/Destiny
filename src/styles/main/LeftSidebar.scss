@@ -1,50 +1,59 @@
 @import "../Theme.scss";
+
 .left {
-    display: flex;
-    flex: 0.2;
+  display: flex;
+  flex: 0.2;
 }
-.leftsidebar{
-  display:flex;
+
+.leftsidebar {
+  display: flex;
   flex-direction: column;
   background-color: $blue_background;
-  color:white;
- @media (min-width:600px) {
-  align-items: center;
-}
-  width:100%;
+  color: white;
+  width: 100%;
   height: 100%;
-.logo{
-  width:200px;
-  height:50px;
-  margin: 20px;
-  img{
-    width:100%;
-    height: 100%;
-    
-  }
-}
-  .links{
-  padding:20px;
-  display:flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 50%;
-  height: 100%;
-  color:white;
 
-  @media (max-width:1279px) {
-  :last-child{
-      margin-top:auto;
+  .logo {
+    width: 200px;
+    height: 50px;
+    margin: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
-  }
-  .linkButton{
-    display:flex;
-    color:white;
-    margin-bottom: 10px;  
-    .text{
-      padding-left: 10px;
+
+  .links {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    color: white;
+
+    a {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+    }
+
+    @media (max-width:1279px) {
+      :last-child {
+        margin-top: auto;
+      }
+    }
+
+    .linkButton {
+      display: flex;
+      color: white;
+      margin-bottom: 10px;
+      justify-content: flex-start;
+      .text {
+        padding-left: 10px;
+      }
     }
   }
 }
-}
-

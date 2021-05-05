@@ -6,6 +6,7 @@
   height: 100vh;
   color: white;
 }
+
 .middle {
   display: flex;
   flex: 0.5;
@@ -32,23 +33,29 @@
     padding: 5x;
     overflow-y: scroll;
     height: 100vh;
-    padding-bottom: 300px;
-
   }
-.content_posts::-webkit-scrollbar {
-    width: 5px;
-}
 
-.content_posts::-webkit-scrollbar-thumb {
+  .content_posts::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .content_posts::-webkit-scrollbar-thumb {
     background: $blue_primary;
-}
+  }
+
   .content_postHeader {
     display: flex;
     color: $blue_primary;
     justify-content: space-between;
-    padding: 20px;
-    border-bottom: 1px solid $blue_secondary;
-
+    align-items: center;
+    padding: 10px;
+    padding-left: 0px;
+    h4 {
+      @media (max-width:600px) {
+      padding-right: 80px; 
+      }
+      
+    }
   }
 
   .content_post {

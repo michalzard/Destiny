@@ -4,7 +4,8 @@ import "../styles/main/popover.scss";
 import ImageIcon from '@material-ui/icons/Image';
 import GifIcon from '@material-ui/icons/Gif';
 import EmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import {Button,TextField,SwipeableDrawer,Grid,Hidden,useMediaQuery,useTheme} from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import {Button,TextField,SwipeableDrawer ,Grid,Hidden,useMediaQuery,useTheme} from "@material-ui/core";
 import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
 import {PostOverview,FullPost,PostNotFound,FavoritesNotFound} from "./Post";
@@ -26,15 +27,16 @@ function Main({token}) {
         
         <Grid item md={3} className="left">
         <Hidden xsDown>
-        <LeftSideBar token={token} hidden={isSmallScreen} settings={isMediumScreen}/>
+        <LeftSideBar token={token} settings={isMediumScreen}/>
         </Hidden>
-        <SwipeableDrawer anchor="left" open={swipeDrawer} onClose={()=>{setSwipeDrawer(false)}}
-        BackdropProps={{color:"black"}}
-        onOpen={()=>{setSwipeDrawer(true)}}>
+        <SwipeableDrawer  anchor="left" open={swipeDrawer} 
+        onOpen={()=>{setSwipeDrawer(true)}} onClose={()=>{setSwipeDrawer(false)}}
+        BackdropProps={{color:"black"}}>
         <LeftSideBar token={token} hidden={isSmallScreen} settings={isMediumScreen}/>
         </SwipeableDrawer>
         </Grid>
-        <Grid item xs={12} md={9} className="middle"><Content token={token} 
+
+        <Grid item xs={12} md={9} className="middle"><Content token={token} handleDrawer={setSwipeDrawer} 
         createButtonSize={isSmallScreen} /></Grid>
         <Hidden mdDown>
         <Grid item md={3} className="right"><RightSideBar token={token}/></Grid>       
@@ -48,7 +50,7 @@ export default Main
 
 
 
-function Content({token,createButtonSize}){
+function Content({token,createButtonSize,handleDrawer}){
     const [allOverviews,setOverviews]=useState([]);
     const [favOverviews,setFavOverviews]=useState([]);
     const [currentPostById,setCurrentPostById]=useState({});
@@ -99,7 +101,7 @@ function Content({token,createButtonSize}){
     if(history.location.pathname===`/post/${commentID}/comments`){ getCurrentPostComments();
     return setCurrentPostById({});
     }
-    if(history.location.pathname==="/latest") {getAllPosts();
+    if(history.location.pathname==="/") {getAllPosts();
     return setOverviews([]);
     }
     checkProfile();
@@ -110,10 +112,10 @@ function Content({token,createButtonSize}){
         <div className="content">
             {history.location.pathname==="/submit" ?  <CreatePostContainer token={token}/> :
             <>
-            <CreatePostRedirect createButtonSize={createButtonSize}/>
+            <CreatePostRedirect createButtonSize={createButtonSize} handleDrawer={handleDrawer} />
             <div className="content_posts">
             {
-                history.location.pathname==="/" ? 
+                history.location.pathname==="/latest" ? 
                 favOverviews.length>0 ?
                 favOverviews.map((post,i)=>{
                 return post ? <PostOverview key={i} _id={post._id} author={post.author} title={post.title} content={post.content}
@@ -145,9 +147,10 @@ function Content({token,createButtonSize}){
 }
 
 
-function CreatePostRedirect({createButtonSize}){
+function CreatePostRedirect({handleDrawer,createButtonSize}){
     return(
         <div className="content_postHeader">
+        <Button variant="text" style={{color:"#5d7290"}} onClick={()=>{handleDrawer(true)}}><MenuIcon/></Button>
         <h4>Your Feed</h4>
         <Button href="/submit" variant="contained" color="secondary" size={createButtonSize ? "small" : "medium"} >Create Post</Button>
         </div>
@@ -202,7 +205,7 @@ return(
     <EmoticonIcon className="postIcon"/>
     </div>
     <div className="postButton">
-    <Button  disabled={(postTitle.length>0) ? false : true} href="/latest"
+    <Button  disabled={(postTitle.length>0) ? false : true} href="/"
     variant="contained" color="secondary" onClick={()=>{createPost();}}>Post</Button>
     </div>
     </div>

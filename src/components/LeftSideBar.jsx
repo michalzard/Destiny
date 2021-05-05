@@ -7,7 +7,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import NewReleasesIcon from '@material-ui/icons/NewReleasesSharp';
 import {useHistory} from "react-router-dom";
 
-function LeftSideBar({hidden,settings}){    
+function LeftSideBar({settings}){    
     return(
         <div className="leftsidebar">
         <div className="logo"><img src={Destiny} alt="Destiny logo"/></div>
