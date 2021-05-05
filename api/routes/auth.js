@@ -70,13 +70,4 @@ router.get("/session",async (req,res)=>{
     }});
     }else res.send({message:"Cannot find user session"});
 });
-
-// const requireLogin=(req,res,next)=>{
-//     if(!req.session.user){
-//         //redirect login
-//     }
-//     next();
-// }
-   
-
 module.exports=router;
