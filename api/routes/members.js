@@ -52,7 +52,6 @@ router.patch("/:id/photoURL",async(req,res)=>{
 router.post("/:id/follow",async(req,res)=>{
     const {id} = req.params;
     const {followedBy} =req.body;
-    console.log("follow req")
     if(mongoose.Types.ObjectId.isValid(id)){
      //user that made follow request
     const followingUser=await User.findById(followedBy);
