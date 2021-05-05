@@ -4,7 +4,7 @@ import "../styles/main/popover.scss";
 import ImageIcon from '@material-ui/icons/Image';
 import GifIcon from '@material-ui/icons/Gif';
 import EmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import {Button,TextField,Grid,Hidden,useMediaQuery,useTheme} from "@material-ui/core";
+import {Button,TextField,SwipeableDrawer,Grid,Hidden,useMediaQuery,useTheme} from "@material-ui/core";
 import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
 import {PostOverview,FullPost,PostNotFound,FavoritesNotFound} from "./Post";
@@ -20,14 +20,24 @@ function Main({token}) {
     const isSmallScreen=useMediaQuery(theme.breakpoints.down("xs"));
     const isMediumScreen=useMediaQuery(theme.breakpoints.down("md"));
 
+    const [swipeDrawer,setSwipeDrawer]=useState(false);
     return (
         <Grid className="main">
-        <Grid item xs={3} md={3} className="left"><LeftSideBar token={token}
-        hidden={isSmallScreen} settings={isMediumScreen}
-        /></Grid>
-        <Grid item xs={9} md={9} className="middle"><Content token={token} createButtonSize={isSmallScreen} /></Grid>
+        
+        <Grid item md={3} className="left">
+        <Hidden xsDown>
+        <LeftSideBar token={token} hidden={isSmallScreen} settings={isMediumScreen}/>
+        </Hidden>
+        <SwipeableDrawer anchor="left" open={swipeDrawer} onClose={()=>{setSwipeDrawer(false)}}
+        BackdropProps={{color:"black"}}
+        onOpen={()=>{setSwipeDrawer(true)}}>
+        <LeftSideBar token={token} hidden={isSmallScreen} settings={isMediumScreen}/>
+        </SwipeableDrawer>
+        </Grid>
+        <Grid item xs={12} md={9} className="middle"><Content token={token} 
+        createButtonSize={isSmallScreen} /></Grid>
         <Hidden mdDown>
-        <Grid item lg={3} className="right"><RightSideBar token={token}/></Grid>       
+        <Grid item md={3} className="right"><RightSideBar token={token}/></Grid>       
         </Hidden>
         </Grid>
     )
@@ -199,3 +209,8 @@ return(
     </div>
 )
 }
+
+/**
+ * TODO
+ * panel v lavo nech sa da zasunut do boku and u gucci
+ */
