@@ -3,11 +3,12 @@
     display: flex;
     flex: 0.2;
 }
-
 .leftsidebar{
   display:flex;
   flex-direction: column;
+ @media (min-width:600px) {
   align-items: center;
+}
   width:100%;
   height: 100%;
 .logo{
@@ -25,8 +26,13 @@
   display:flex;
   flex-direction: column;
   align-items: flex-start;
-  
   width: 50%;
+  height: 100%;
+  @media (max-width:1279px) {
+  :last-child{
+      margin-top:auto;
+  }
+  }
   .linkButton{
     display:flex;
     color:white;

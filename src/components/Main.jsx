@@ -4,7 +4,7 @@ import "../styles/main/popover.scss";
 import ImageIcon from '@material-ui/icons/Image';
 import GifIcon from '@material-ui/icons/Gif';
 import EmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import {Button,TextField} from "@material-ui/core";
+import {Button,TextField,Grid,Hidden,useMediaQuery,useTheme} from "@material-ui/core";
 import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSidebar";
 import {PostOverview,FullPost,PostNotFound,FavoritesNotFound} from "./Post";
@@ -12,14 +12,24 @@ import axios from 'axios';
 import {useHistory} from "react-router-dom";
 import UserProfile from "./UserProfile";
 
+//ADD SETTINGS BUTTON ON BOTTOM LEFT SIDEBAR WHEN ON SMALL SCREENS TO ACESS ALL THE STUFF FROM PROFILE
+
+
 function Main({token}) {
-    
+    const theme=useTheme();
+    const isSmallScreen=useMediaQuery(theme.breakpoints.down("xs"));
+    const isMediumScreen=useMediaQuery(theme.breakpoints.down("md"));
+
     return (
-        <div className="main">
-        <div className="left"><LeftSideBar token={token}/></div>
-        <div className="middle"><Content token={token}/></div>
-        <div className="right"><RightSideBar token={token}/></div>       
-        </div>
+        <Grid className="main">
+        <Grid item xs={3} md={3} className="left"><LeftSideBar token={token}
+        hidden={isSmallScreen} settings={isMediumScreen}
+        /></Grid>
+        <Grid item xs={9} md={9} className="middle"><Content token={token} createButtonSize={isSmallScreen} /></Grid>
+        <Hidden mdDown>
+        <Grid item lg={3} className="right"><RightSideBar token={token}/></Grid>       
+        </Hidden>
+        </Grid>
     )
 }
 
@@ -28,7 +38,7 @@ export default Main
 
 
 
-function Content({token}){
+function Content({token,createButtonSize}){
     const [allOverviews,setOverviews]=useState([]);
     const [favOverviews,setFavOverviews]=useState([]);
     const [currentPostById,setCurrentPostById]=useState({});
@@ -90,7 +100,7 @@ function Content({token}){
         <div className="content">
             {history.location.pathname==="/submit" ?  <CreatePostContainer token={token}/> :
             <>
-            <CreatePostRedirect/>
+            <CreatePostRedirect createButtonSize={createButtonSize}/>
             <div className="content_posts">
             {
                 history.location.pathname==="/" ? 
@@ -125,11 +135,11 @@ function Content({token}){
 }
 
 
-function CreatePostRedirect(){
+function CreatePostRedirect({createButtonSize}){
     return(
         <div className="content_postHeader">
         <h4>Your Feed</h4>
-        <Button href="/submit" variant="contained" color="secondary">Create Post</Button>
+        <Button href="/submit" variant="contained" color="secondary" size={createButtonSize ? "small" : "medium"} >Create Post</Button>
         </div>
     )
 }
