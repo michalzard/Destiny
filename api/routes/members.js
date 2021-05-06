@@ -4,6 +4,7 @@ const mongoose=require("mongoose");
 const User=require("../schemas/userSchema");
 const Post=require("../schemas/postSchema");
 
+//handle incorrect id better
 router.get("/:id",async(req,res)=>{
     const {id} = req.params;
     if(mongoose.Types.ObjectId.isValid(id)){
@@ -23,7 +24,7 @@ router.get("/:id/followers",async(req,res)=>{
     const user=await User.findById(id,{password:0});
     const postsByWhoUserFollows=await Post.find({author:user.followers.following}).populate("author",{password:0});
     //returns found user with password excluded 
-    res.send({message:"Follower posts found",followerPosts:postsByWhoUserFollows});
+    if(postsByWhoUserFollows)res.send({message:"Follower posts found",followerPosts:postsByWhoUserFollows});
     }else{
         res.send({message:"Member not found"});
     }   
@@ -66,7 +67,6 @@ router.post("/:id/follow",async(req,res)=>{
 router.post("/:id/unfollow",async(req,res)=>{
     const {id} = req.params;
     const {unfollowedBy} =req.body;
-    console.log("unfollow req")
     if(mongoose.Types.ObjectId.isValid(id)){
      //user that made follow request
     const followingUser=await User.findById(unfollowedBy);
