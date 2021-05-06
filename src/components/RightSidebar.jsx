@@ -23,7 +23,7 @@ function RightSideBar({token}){
 
 export default RightSideBar;
 
-function ProfileMenu(){
+export function ProfileMenu(){
      const logout=()=>{
          axios.post("http://localhost:3001/auth/logout");
          if(localStorage.getItem("token")) localStorage.removeItem("token");
@@ -34,7 +34,7 @@ function ProfileMenu(){
     overlay={
     <Popover>
    <Popover.Content>
-   <p><a href="/u/userTag" className="anchor">
+   <p><a href="http://localhost:3000/m/your_id" className="anchor">
    <PersonIcon /> Profile </a></p>
 
    <p><a href="https://github.com/michalzard/Destiny/issues" target="_blank" rel="noreferrer" className="anchor">

@@ -150,7 +150,11 @@ function Content({token,createButtonSize,handleDrawer}){
 function CreatePostRedirect({handleDrawer,createButtonSize}){
     return(
         <div className="content_postHeader">
-        <Button variant="text" style={{color:"#5d7290"}} onClick={()=>{handleDrawer(true)}}><MenuIcon/></Button>
+        <Hidden smUp>
+        <Button variant="text" style={{color:"#5d7290"}} onClick={()=>{handleDrawer(true)}}>
+        <MenuIcon/>
+        </Button>
+        </Hidden>
         <h4>Your Feed</h4>
         <Button href="/submit" variant="contained" color="secondary" size={createButtonSize ? "small" : "medium"} >Create Post</Button>
         </div>
@@ -212,8 +216,3 @@ return(
     </div>
 )
 }
-
-/**
- * TODO
- * panel v lavo nech sa da zasunut do boku and u gucci
- */

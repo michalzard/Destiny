@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button } from "@material-ui/core";
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {PostOverview,LikesNotFound} from "../components//Post";
 
 function UserProfile({id}) {
@@ -11,6 +12,7 @@ function UserProfile({id}) {
     const [userPosts,setUserPosts]=useState([]);
     const [userLikedPosts,setUserLikedPosts]=useState([]);
     const [selected,setSelected]=useState("Posts");
+    const [show,setShow]=useState("");
     const changeSelected=(select)=>{
         setSelected(select);
     }
@@ -29,9 +31,14 @@ function UserProfile({id}) {
     const fetchUserData=()=>{
         axios.get(`http://localhost:3001/m/${id}`).then(data=>{
             const {member,posts,likes}=data.data;
+            if(member && posts && likes){
             setUserLikedPosts(likes);
             setUserInfo(member);
             setUserPosts(posts);
+            setShow("profile")
+            }else{
+            setShow("not-found");
+            }
         })
     }
     useEffect(() => {
@@ -48,6 +55,8 @@ function UserProfile({id}) {
     }
     return (
         <div className="user_profile">
+        
+        {show==="profile" ?
         <div className="header_info">
         <div className="header">
         <img src={userInfo.photoURL==="" ? defaultPfp : userInfo.photoURL} alt="User profile"></img>
@@ -83,8 +92,6 @@ function UserProfile({id}) {
         <Button variant="text" className="btnSelect" onClick={()=>{changeSelected("Likes")}}>Likes</Button>
         </div>      
         </div>
-        </div>
-        
         {
             selected==="Posts" ?
             userPosts.map((post,i)=>{
@@ -103,10 +110,24 @@ function UserProfile({id}) {
             
            
         }
-
-
+        </div>
+        
+        : <ProfileNotFound/>
+        }
+        
         </div>
     )
 }
 
+function ProfileNotFound(){
+return(
+    <div className="comment_notfound">
+    <span><AccountCircleIcon style={{marginRight:"10px"}}/>Profile not found</span>
+    </div>   
+)
+}
+
 export default UserProfile;
+
+
+//TODO: UserData not found(when m/incorrectId) is entered

@@ -57,3 +57,7 @@
     }
   }
 }
+//popover on smallscren always on top
+#popover-menu{
+  z-index: 9999;
+}
