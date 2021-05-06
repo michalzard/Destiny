@@ -50,7 +50,6 @@ userSchema.methods.addFollowedBy = function (userObjectId) {
 userSchema.methods.removeFollowed = function(userObjectId){
   if(mongoose.Types.ObjectId.isValid(userObjectId)){
     const removeIndex=this.followers.followedBy.indexOf(userObjectId);
-    console.log(removeIndex);
     this.followers.followedBy.splice(removeIndex,1);
     this.followers.followedCount--;
   }
