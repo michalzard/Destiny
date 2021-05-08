@@ -2,7 +2,7 @@ import {OverlayTrigger,Popover} from 'react-bootstrap';
 import "../styles/main/RightSidebar.scss";
 import {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
 import {Button, TextField} from "@material-ui/core";
-import defualtPfp from "../assets/images/defaultprofilepic.png"
+import defaultPfp from "../assets/images/defaultprofilepic.png"
 import PersonIcon from '@material-ui/icons/Person';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 function RightSideBar({token}){
     return(
         <div className="rightSidebar">
-        <ProfileMenu/>
+        <ProfileMenu token={token} />
         <ProfileCard token={token} />
         </div>
     )
@@ -23,18 +23,31 @@ function RightSideBar({token}){
 
 export default RightSideBar;
 
-export function ProfileMenu(){
-     const logout=()=>{
-         axios.post("http://localhost:3001/auth/logout");
-         if(localStorage.getItem("token")) localStorage.removeItem("token");
-     }
+export function ProfileMenu({token}){
+    const [currentUserID,setCurrentUser]=useState('');
+    const fetchCurrentUser=()=>{ 
+    if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
+    const member=data.data.user;    
+    if(member && !currentUserID) setCurrentUser(member._id);
+    });
+    }
+    }
+
+    const logout=()=>{
+    axios.post("http://localhost:3001/auth/logout");
+    if(localStorage.getItem("token")) localStorage.removeItem("token");
+    }
+    useEffect(()=>{
+    fetchCurrentUser();
+    //eslint-disable-next-line
+    },[])
     return(
     <div className="profileMenu">
     <OverlayTrigger trigger="click" placement="left" 
     overlay={
     <Popover>
    <Popover.Content>
-   <p><a href="http://localhost:3000/m/your_id" className="anchor">
+   <p><a href={`http://localhost:3000/m/${currentUserID}`} className="anchor">
    <PersonIcon /> Profile </a></p>
 
    <p><a href="https://github.com/michalzard/Destiny/issues" target="_blank" rel="noreferrer" className="anchor">
@@ -135,7 +148,7 @@ function ProfileCard({token}){
     </div>
     :
     <div className="card_header">
-    <img src={photoURL? photoURL : defualtPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
+    <img src={photoURL? photoURL : defaultPfp } className="card_photo" alt="" onClick={()=>{setEditPhotoURL();}}/>
     <div className="card_info"><a href={`http://localhost:3000/m/${currentUserID}`} style={{textDecoration:"none",color:"white"}}>{displayName}</a>
     <div className="info_tag">@{currentUserID}</div>   
     </div>

@@ -31,6 +31,10 @@
     }
     .description{
         display: flex;
+        align-items: center;
+        @media (max-width:600px) {
+            font-size: small;
+        }
         span{
             padding-right: 20px;
         }
@@ -40,6 +44,7 @@
             align-items: center;
         }
         .timestamp{
+            padding:0;
             padding-left: 10px;
         }
     }
