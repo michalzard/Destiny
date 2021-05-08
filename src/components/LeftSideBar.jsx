@@ -13,7 +13,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ReactComponent as DiscordIcon} from "../assets/images/discord.svg";
 
 import axios from 'axios';
-
+import {useState,useEffect} from "react";
 /**
  * <OverlayTrigger trigger="click" placement="left" 
     overlay={
@@ -25,7 +25,7 @@ import axios from 'axios';
    </OverlayTrigger>
  */
 
-function LeftSideBar({settings}){    
+function LeftSideBar({settings,token}){    
     return(
         <div className="leftsidebar">
         <div className="logo"><img src={Destiny} alt="Destiny logo"/></div>
@@ -34,7 +34,7 @@ function LeftSideBar({settings}){
         <LinkButton icon={<NewReleasesIcon/>} redirect="/latest" text="Latest" />
         {
         settings ?
-        <SettingsButton/>
+        <SettingsButton token={token}/>
         : null
         }
         </div>
@@ -42,16 +42,29 @@ function LeftSideBar({settings}){
     )
 }
 
-function SettingsButton(){
+function SettingsButton({token}){
+const [currentUserID,setCurrentUser]=useState('');
+const fetchCurrentUser=()=>{ 
+if(token){axios.get(`http://localhost:3001/auth/session?token=${token}`).then(data=>{
+const member=data.data.user;    
+if(member && !currentUserID) setCurrentUser(member._id);
+});
+}
+}
 const logout=()=>{
 axios.post("http://localhost:3001/auth/logout");
 if(localStorage.getItem("token")) localStorage.removeItem("token");
 }
+
+useEffect(() => {
+    fetchCurrentUser();
+    //eslint-disable-next-line
+}, []);
 return (
     <OverlayTrigger trigger="click" overlay={
         <Popover id="popover-menu">
         <Popover.Content>
-        <p><a href="http://localhost:3000/m/your_id" className="anchor">
+        <p><a href={`http://localhost:3000/m/${currentUserID}`} className="anchor">
         <PersonIcon /> Profile </a></p>
 
         <p><a href="https://github.com/michalzard/Destiny/issues" target="_blank" rel="noreferrer" className="anchor">
