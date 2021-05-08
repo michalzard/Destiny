@@ -4,15 +4,15 @@ const mongoose=require("mongoose");
 const User=require("../schemas/userSchema");
 const Post=require("../schemas/postSchema");
 
-//handle incorrect id better
 router.get("/:id",async(req,res)=>{
     const {id} = req.params;
     if(mongoose.Types.ObjectId.isValid(id)){
     const user=await User.findById(id,{password:0});
-    const postsByUser=await Post.find({author:user._id}).populate("author");
-    const postsLikedByUser=await Post.find({"votes.likedBy":id}).populate("author");
-    //returns found user with password excluded 
+    if(user){
+    const postsByUser=await Post.find({author:user._id}).populate("author",{password:0});
+    const postsLikedByUser=await Post.find({"votes.likedBy":id}).populate("author",{password:0});
     res.send({message:"Member found",member:user,posts:postsByUser,likes:postsLikedByUser});
+    }else res.send({message:"Member not found"});
     }else{
         res.send({message:"Member not found"});
     }   
