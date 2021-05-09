@@ -5,7 +5,7 @@ import {ReactComponent as GithubIcon} from "../../assets/images/github.svg";
 import  {ReactComponent as DiscordIcon} from "../../assets/images/discord.svg";
 import Destiny from '../../assets/images/destinyLogo.png';
 import {Redirect} from "react-router-dom";
-import {TextField} from "@material-ui/core";
+import {TextField,Hidden} from "@material-ui/core";
 import axios from "axios";
 
 function Register() {
@@ -54,9 +54,15 @@ function Register() {
             <a href="/login" style={{color:"#BFFFBC"}}>Already have an account?</a>
             </div>
             </div>
-
             <div className="register_footer">
+            <Hidden xsDown>
             <div className="logo"><img src={Destiny} alt="Destiny logo"/></div>
+            </Hidden>
+            <Hidden mdUp>
+            {/**empty div to fill space when logo is hidden */}
+            <div></div>
+            </Hidden>
+            
             <div className="footer_info">
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&feature=youtu.be">Privacy Policy</a>
             <a href="https://github.com/michalzard/Destiny/issues" >Report a bug</a>
