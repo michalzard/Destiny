@@ -1,6 +1,19 @@
-# Getting Started with Create React App
+# Destiny
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
+* User Accounts
+  * Authentication
+  * Authorization
+* Profile
+  * Profile picture
+  * Description
+  * Follow 
+* Posts
+  * Author name
+  * timestamp (format: xy hours ago)
+  * create post
+  * add comment
+
 
 ## Available Scripts
 
@@ -9,15 +22,10 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
@@ -29,42 +37,51 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `npm run server`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Starts [http://localhost:3001](http://localhost:3001) to serve responses from api & database.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `npm run server-dev`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Starts [http://localhost:3001](http://localhost:3001) to serve responses from api & database.
+Runs [nodemon](https://www.npmjs.com/package/nodemon) to hot reload running server if files change
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Screenshots 
 
-## Learn More
+**Welcome screen**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Imgur](https://imgur.com/xMOPLJW.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Login screen**
 
-### Code Splitting
+![Imgur](https://imgur.com/tRpmZwY.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Registration screen**
 
-### Analyzing the Bundle Size
+![Imgur](https://imgur.com/0QifWWd.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Home Feed**
 
-### Making a Progressive Web App
+![Imgur](https://imgur.com/CSncQgb.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**Latest Feed(when not following anyone)**
 
-### Advanced Configuration
+![Imgur](https://imgur.com/uaWEeSf.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**User Profile posts**
 
-### Deployment
+![Imgur](https://imgur.com/kjKhAhz.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**User Profile likes**
 
-### `npm run build` fails to minify
+![Imgur](https://imgur.com/B1fCRFH.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**User Post**
+
+![Imgur](https://imgur.com/hK8A4IE.png)
+
+**User Post comments**
+
+![Imgur](https://imgur.com/sss2mgR.png)
+
+
