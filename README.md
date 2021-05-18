@@ -10,9 +10,9 @@
   * Follow 
 * Posts
   * Author name
-  * timestamp (format: xy hours ago)
-  * create post
-  * add comment
+  * Timestamp (format: xy hours ago)
+  * Create post
+  * Add comment
 
 
 ## Available Scripts
