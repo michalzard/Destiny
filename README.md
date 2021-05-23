@@ -1,4 +1,4 @@
-![Imgur](https://imgur.com/CRfPVrw.png)
+![Imgur](https://imgur.com/EGHBU8W.png)
 
 ## Features
 * User Accounts
