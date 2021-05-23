@@ -1,5 +1,7 @@
 # Destiny
 
+![Imgur](https://imgur.com/a/htFijzC.png)
+
 ## Features
 * User Accounts
   * Authentication
