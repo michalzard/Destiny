@@ -13,7 +13,7 @@
   * Timestamp (format: xy hours ago)
   * Create post
   * Add comment
-* Responsibility
+* Responsivity
   * Web
   * Mobile
 
