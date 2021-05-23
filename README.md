@@ -13,7 +13,9 @@
   * Timestamp (format: xy hours ago)
   * Create post
   * Add comment
-
+* Responsibility
+  * Web
+  * Mobile
 
 ## Available Scripts
 
@@ -48,40 +50,38 @@ Runs [nodemon](https://www.npmjs.com/package/nodemon) to hot reload running serv
 
 ## Screenshots 
 
-**Welcome screen**
+<details>
+  <summary>Website view</summary>
 
 ![Imgur](https://imgur.com/xMOPLJW.png)
 
-**Login screen**
-
 ![Imgur](https://imgur.com/tRpmZwY.png)
-
-**Registration screen**
 
 ![Imgur](https://imgur.com/0QifWWd.png)
 
-**Home Feed**
-
 ![Imgur](https://imgur.com/CSncQgb.png)
-
-**Latest Feed(when not following anyone)**
 
 ![Imgur](https://imgur.com/uaWEeSf.png)
 
-**User Profile posts**
-
 ![Imgur](https://imgur.com/kjKhAhz.png)
-
-**User Profile likes**
 
 ![Imgur](https://imgur.com/B1fCRFH.png)
 
-**User Post**
-
 ![Imgur](https://imgur.com/hK8A4IE.png)
-
-**User Post comments**
 
 ![Imgur](https://imgur.com/sss2mgR.png)
 
+</details>
 
+<details>
+  <summary>Mobile view</summary>
+
+ ![Imgur](https://imgur.com/Z80w1fl.png)
+
+ ![Imgur](https://imgur.com/AKhW05M.png)
+
+ ![Imgur](https://imgur.com/OTYYjzr.png)
+
+ ![Imgur](https://imgur.com/7hAGMUy.png)
+ 
+</details>
