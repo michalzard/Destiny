@@ -1,6 +1,4 @@
-# Destiny
-
-![Imgur](https://imgur.com/a/htFijzC.png)
+![Imgur](https://imgur.com/CRfPVrw.png)
 
 ## Features
 * User Accounts
